@@ -52,7 +52,6 @@ public class SecurityConfig {
                     return new JwtAuthenticationToken(auth, grantedAuthorities);
 
                 })))
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
