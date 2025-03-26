@@ -23,15 +23,23 @@ public class PhraseServiceApplication {
         Map<String, Object> defaultProperties = new HashMap<>();
 
         String env = System.getenv().getOrDefault("ENV", "local");
+        String domain = System.getenv().get("SWIFTLING_HOSTNAME");
 
         //TODO Use real domain when it is available
-        String hostIp = env.equalsIgnoreCase("local") ? "localhost" : env.equalsIgnoreCase("prod") ? "domain" : getPublicIP();
+        String hostOrIp = env.equalsIgnoreCase("local") ? "localhost" : env.equalsIgnoreCase("prod") ? domain : getPublicIP();
 
-        defaultProperties.put("host.ip", hostIp);
-        defaultProperties.put("eureka.instance.preferIpAddress", true);
-        defaultProperties.put("eureka.instance.ipAddress", hostIp);
+        defaultProperties.put("host.name-or-ip", hostOrIp);
 
-        String managementContextPath = "http://" + hostIp + ":${server.port}/actuator";
+        boolean useIp = !env.equalsIgnoreCase("local") && (!env.equalsIgnoreCase("prod"));
+
+        if (useIp) {
+            defaultProperties.put("eureka.instance.preferIpAddress", true);
+            defaultProperties.put("eureka.instance.ipAddress", hostOrIp);
+        } else {
+            defaultProperties.put("eureka.instance.hostname", hostOrIp);
+        }
+
+        String managementContextPath = "http://" + hostOrIp + ":${server.port}/actuator";
 
         defaultProperties.put("management.info.env.enabled", true);
         defaultProperties.put("management.endpoint.health.show-details", "ALWAYS");
