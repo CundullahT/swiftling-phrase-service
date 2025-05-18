@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,7 +18,6 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(jsr250Enabled = true)
 public class SecurityConfig {
 
     @Value("${keycloak.resource}")
@@ -30,11 +28,11 @@ public class SecurityConfig {
 
         return httpSecurity
                 .authorizeHttpRequests(httpRequests -> httpRequests
-                        .requestMatchers("/api/v1/root/**").hasAuthority("Root")
-                        .requestMatchers("/api/v1/admin/**").hasAnyAuthority("Admin", "Root")
-                        .requestMatchers("/api/v1/user/**").hasAnyAuthority("User", "Root")
-                        .requestMatchers("/demo").hasAnyAuthority("User", "Root")
-                        .requestMatchers("/actuator/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
+                        .requestMatchers("/actuator/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(auth -> {
 
