@@ -45,6 +45,30 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionWrapper);
     }
 
+    @ExceptionHandler(ExternalIdNotRetrievedException.class)
+    public ResponseEntity<ExceptionWrapper> handleExternalIdNotRetrievedException(Throwable exception) {
+        log.error(exception.getMessage());
+        ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
+                .success(false)
+                .message(exception.getMessage())
+                .httpStatus(HttpStatus.SERVICE_UNAVAILABLE)
+                .localDateTime(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(exceptionWrapper);
+    }
+
+    @ExceptionHandler({UnknownStatusException.class, UnknownLanguageException.class})
+    public ResponseEntity<ExceptionWrapper> handleUnknownValueExceptions(Throwable exception) {
+        log.error(exception.getMessage());
+        ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
+                .success(false)
+                .message(exception.getMessage())
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .localDateTime(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionWrapper);
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ExceptionWrapper> handleAccessDeniedException(Throwable exception) {
         log.error(exception.getMessage());

@@ -1,6 +1,11 @@
 package com.swiftling.enums;
 
+import com.swiftling.exception.UnknownLanguageException;
 import lombok.Getter;
+
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 public enum Language {
@@ -119,6 +124,18 @@ public enum Language {
 
     Language(String value) {
         this.value = value;
+    }
+
+    private static final Map<String,Language> BY_VALUE =
+            Stream.of(values())
+                    .collect(Collectors.toMap(Language::getValue, s -> s));
+
+    public static Language findByValue(String value) {
+        Language language = BY_VALUE.get(value);
+        if (language == null) {
+            throw new UnknownLanguageException("Unknown Language: " + value);
+        }
+        return language;
     }
 
 }

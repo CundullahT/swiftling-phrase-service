@@ -4,4 +4,6 @@ public interface KeycloakService {
 
     String getAccessToken();
 
+    String getLoggedInUserName();
+
 }

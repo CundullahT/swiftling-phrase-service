@@ -3,12 +3,18 @@ package com.swiftling.util;
 public class SwaggerExamples {
 
     private SwaggerExamples() {}
-    
-    public static final String USER_CREATE_REQUEST_EXAMPLE = "{\n" +
-            "  \"firstname\": \"John\",\n" +
-            "  \"lastname\": \"Doe\",\n" +
-            "  \"email\": \"john.doe@example.com\",\n" +
-            "  \"password\": \"Pa$$w0rd123\"\n" +
+
+    public static final String PHRASE_CREATE_REQUEST_EXAMPLE = "{\n" +
+            "  \"originalPhrase\": \"Bonjour\",\n" +
+            "  \"originalLanguage\": \"FRENCH\",\n" +
+            "  \"meaning\": \"Hello\",\n" +
+            "  \"meaningLanguage\": \"ENGLISH\",\n" +
+            "  \"phraseTags\": [\n" +
+            "    \"greeting\",\n" +
+            "    \"basic\"\n" +
+            "  ],\n" +
+            "  \"notes\": \"Common polite greeting in French.\",\n" +
+            "  \"ownerUserAccountId\": \"123e4567-e89b-12d3-a456-426614174000\"\n" +
             "}";
 
     public static final String USER_UPDATE_REQUEST_EXAMPLE = "{\n" +
@@ -37,20 +43,23 @@ public class SwaggerExamples {
             "  \"statusCode\": \"OK\",\n" +
             "  \"message\": \"Password has been changed successfully.\"\n" +
             "}";
-    
-    public static final String USER_CREATE_RESPONSE_EXAMPLE = "{\n" +
+
+    public static final String PHRASE_CREATE_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +
             "  \"statusCode\": \"CREATED\",\n" +
-            "  \"message\": \"The user account has been signed up successfully.\",\n" +
+            "  \"message\": \"The phrase has been created successfully.\",\n" +
             "  \"data\": {\n" +
-            "    \"firstname\": \"John\",\n" +
-            "    \"lastname\": \"Doe\",\n" +
-            "    \"username\": \"john.doe\",\n" +
-            "    \"email\": \"john.doe@example.com\",\n" +
-            "    \"enabled\": true,\n" +
-            "    \"role\": {\n" +
-            "      \"description\": \"User\"\n" +
-            "    }\n" +
+            "    \"externalPhraseId\": \"550e8400-e29b-41d4-a716-446655440000\",\n" +
+            "    \"originalPhrase\": \"Bonjour\",\n" +
+            "    \"originalLanguage\": \"FRENCH\",\n" +
+            "    \"meaning\": \"Hello\",\n" +
+            "    \"meaningLanguage\": \"ENGLISH\",\n" +
+            "    \"phraseTags\": [\n" +
+            "      \"greeting\",\n" +
+            "      \"basic\"\n" +
+            "    ],\n" +
+            "    \"notes\": \"Common polite greeting in French.\",\n" +
+            "    \"ownerUserAccountId\": \"123e4567-e89b-12d3-a456-426614174000\"\n" +
             "  }\n" +
             "}";
 
@@ -105,9 +114,9 @@ public class SwaggerExamples {
             "  \"message\": \"The forgot password email was sent successfully.\"\n" +
             "}";
 
-    public static final String USER_ALREADY_EXISTS_RESPONSE_EXAMPLE = "{\n" +
+    public static final String PHRASE_ALREADY_EXISTS_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": false,\n" +
-            "  \"message\": \"The user account with the given email address (sample@email.com) already exists.\",\n" +
+            "  \"message\": \"The given phrase already exists: demo phrase\",\n" +
             "  \"httpStatus\": \"CONFLICT\",\n" +
             "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
             "}";
