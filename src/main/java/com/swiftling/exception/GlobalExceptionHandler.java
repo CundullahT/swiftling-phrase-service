@@ -33,8 +33,20 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
+    @ExceptionHandler({PhraseAlreadyExistsException.class, PhraseCanNotBeDeletedException.class})
+    public ResponseEntity<ExceptionWrapper> handleConflictExceptions(Throwable exception) {
+        log.error(exception.getMessage());
+        ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
+                .success(false)
+                .message(exception.getMessage())
+                .httpStatus(HttpStatus.CONFLICT)
+                .localDateTime(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionWrapper);
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ExceptionWrapper> handleAccessExceptions(Throwable exception) {
+    public ResponseEntity<ExceptionWrapper> handleAccessDeniedException(Throwable exception) {
         log.error(exception.getMessage());
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
                 .success(false)
