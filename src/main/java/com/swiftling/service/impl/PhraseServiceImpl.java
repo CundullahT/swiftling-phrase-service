@@ -5,6 +5,7 @@ import com.swiftling.dto.PhraseDTO;
 import com.swiftling.dto.UserAccountResponseDTO;
 import com.swiftling.entity.Phrase;
 import com.swiftling.entity.Tag;
+import com.swiftling.enums.DefaultTag;
 import com.swiftling.enums.Language;
 import com.swiftling.exception.ExternalIdNotRetrievedException;
 import com.swiftling.exception.PhraseAlreadyExistsException;
@@ -17,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class PhraseServiceImpl implements PhraseService {
@@ -59,8 +62,28 @@ public class PhraseServiceImpl implements PhraseService {
     }
 
     @Override
-    public List<Language> getLanguages() {
-        return List.of(Language.values());
+    public List<String> getLanguages() {
+        return Stream.of(Language.values())
+                .map(Language::getValue).toList();
+    }
+
+    @Override
+    public List<String> getTags() {
+
+        List<String> allTags = new ArrayList<>();
+
+        List<String> defaultTags = Stream.of(DefaultTag.values())
+                .map(DefaultTag::getValue).toList();
+
+        List<String> savedTags = tagRepository.findAllByPhraseOwner(getOwnerUserAccountId())
+                .stream().map(Tag::getTagName)
+                .toList();
+
+        allTags.addAll(defaultTags);
+        allTags.addAll(savedTags);
+
+        return allTags;
+
     }
 
     private UUID getOwnerUserAccountId() {

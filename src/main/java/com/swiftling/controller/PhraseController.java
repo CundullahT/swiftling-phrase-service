@@ -72,13 +72,35 @@ public class PhraseController {
                             examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE)))})
     public ResponseEntity<ResponseWrapper> getLanguages() {
 
-        List<Language> languages = phraseService.getLanguages();
+        List<String> languages = phraseService.getLanguages();
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .statusCode(HttpStatus.OK)
                 .success(true)
                 .message("The languages have been retrieved successfully.")
                 .data(languages)
+                .build());
+
+    }
+
+    @GetMapping("/tags")
+    @Operation(summary = "Get all the tag options.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The tags have been retrieved successfully.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.TAG_GET_ALL_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "403", description = "Access is denied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE)))})
+    public ResponseEntity<ResponseWrapper> getTags() {
+
+        List<String> tags = phraseService.getTags();
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .statusCode(HttpStatus.OK)
+                .success(true)
+                .message("The tags have been retrieved successfully.")
+                .data(tags)
                 .build());
 
     }

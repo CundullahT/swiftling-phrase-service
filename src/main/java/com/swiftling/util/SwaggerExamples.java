@@ -65,7 +65,7 @@ public class SwaggerExamples {
 
     public static final String LANGUAGE_GET_ALL_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +
-            "  \"statusCode\": \"CREATED\",\n" +
+            "  \"statusCode\": \"OK\",\n" +
             "  \"message\": \"The languages have been retrieved successfully.\",\n" +
             "  \"data\": [\n" +
             "    \"Afrikaans\",\n" +
@@ -177,6 +177,19 @@ public class SwaggerExamples {
             "    \"Yiddish\",\n" +
             "    \"Yoruba\",\n" +
             "    \"Zulu\"\n" +
+            "  ]\n" +
+            "}";
+
+    public static final String TAG_GET_ALL_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": true,\n" +
+            "  \"statusCode\": \"OK\",\n" +
+            "  \"message\": \"The tags have been retrieved successfully.\",\n" +
+            "  \"data\": [\n" +
+            "    \"noun\",\n" +
+            "    \"verb\",\n" +
+            "    \"adjective\",\n" +
+            "    \"adverb\",\n" +
+            "    \"pronoun\"\n" +
             "  ]\n" +
             "}";
 
