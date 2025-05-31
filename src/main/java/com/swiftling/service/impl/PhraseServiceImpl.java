@@ -19,6 +19,7 @@ import com.swiftling.util.MapperUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -56,6 +57,7 @@ public class PhraseServiceImpl implements PhraseService {
         phraseToSave.setMeaningLanguage(Language.findByValue(phraseDTO.getMeaningLanguage()));
         phraseToSave.setStatus(Status.IN_PROGRESS);
         phraseToSave.setOwnerUserAccountId(getOwnerUserAccountId());
+        phraseToSave.setInsertDateTime(LocalDateTime.now());
 
         setPhraseTags(phraseToSave, phraseDTO);
 
@@ -69,6 +71,24 @@ public class PhraseServiceImpl implements PhraseService {
     public List<PhraseDTO> getPhrases(String status, String language) {
 
         return phraseRepository.findAllByOwnerUserAccountIdAndStatusAndLanguage(getOwnerUserAccountId(), status, language)
+                .stream().map(phrase -> {
+
+                    PhraseDTO phraseDTO = mapperUtil.convert(phrase, new PhraseDTO());
+
+                    phraseDTO.setOriginalLanguage(phrase.getOriginalLanguage().getValue());
+                    phraseDTO.setMeaningLanguage(phrase.getMeaningLanguage().getValue());
+                    phraseDTO.setStatus(phrase.getStatus().getValue());
+
+                    return phraseDTO;
+
+                }).toList();
+
+    }
+
+    @Override
+    public List<PhraseDTO> getLastTenPhrases() {
+
+        return phraseRepository.findTop10ByOwnerUserAccountIdOrderByInsertDateTimeDesc(getOwnerUserAccountId())
                 .stream().map(phrase -> {
 
                     PhraseDTO phraseDTO = mapperUtil.convert(phrase, new PhraseDTO());

@@ -49,8 +49,7 @@ public class SwaggerExamples {
             "        \"greeting\",\n" +
             "        \"basic\"\n" +
             "      ],\n" +
-            "      \"notes\": \"Common French greeting.\",\n" +
-            "      \"ownerUserAccountId\": \"123e4567-e89b-12d3-a456-426614174000\"\n" +
+            "      \"notes\": \"Common French greeting.\"\n" +
             "    },\n" +
             "    {\n" +
             "      \"externalPhraseId\": \"660e8400-e29b-41d4-a716-446655440111\",\n" +
@@ -65,6 +64,128 @@ public class SwaggerExamples {
             "    }\n" +
             "  ]\n" +
             "}";
+
+    public static final String PHRASE_GET_LAST_TEN_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": true,\n" +
+            "  \"statusCode\": \"OK\",\n" +
+            "  \"message\": \"The phrases have been retrieved successfully.\",\n" +
+            "  \"data\": [\n" +
+            "    {\n" +
+            "      \"externalPhraseId\": \"550e8400-e29b-41d4-a716-446655440000\",\n" +
+            "      \"originalPhrase\": \"Bonjour\",\n" +
+            "      \"originalLanguage\": \"French\",\n" +
+            "      \"meaning\": \"Hello\",\n" +
+            "      \"meaningLanguage\": \"English\",\n" +
+            "      \"phraseTags\": [\n" +
+            "        \"greeting\",\n" +
+            "        \"basic\"\n" +
+            "      ],\n" +
+            "      \"notes\": \"Common French greeting.\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"externalPhraseId\": \"660e8400-e29b-41d4-a716-446655440111\",\n" +
+            "      \"originalPhrase\": \"Guten Morgen\",\n" +
+            "      \"originalLanguage\": \"German\",\n" +
+            "      \"meaning\": \"Good morning\",\n" +
+            "      \"meaningLanguage\": \"English\",\n" +
+            "      \"phraseTags\": [\n" +
+            "        \"greeting\"\n" +
+            "      ],\n" +
+            "      \"notes\": \"Used in the morning hours.\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"externalPhraseId\": \"770e8400-e29b-41d4-a716-446655440222\",\n" +
+            "      \"originalPhrase\": \"Gracias\",\n" +
+            "      \"originalLanguage\": \"Spanish\",\n" +
+            "      \"meaning\": \"Thank you\",\n" +
+            "      \"meaningLanguage\": \"English\",\n" +
+            "      \"phraseTags\": [\n" +
+            "        \"gratitude\"\n" +
+            "      ],\n" +
+            "      \"notes\": \"Expressing thanks.\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"externalPhraseId\": \"880e8400-e29b-41d4-a716-446655440333\",\n" +
+            "      \"originalPhrase\": \"Ciao\",\n" +
+            "      \"originalLanguage\": \"Italian\",\n" +
+            "      \"meaning\": \"Hello/Goodbye\",\n" +
+            "      \"meaningLanguage\": \"English\",\n" +
+            "      \"phraseTags\": [\n" +
+            "        \"greeting\",\n" +
+            "        \"farewell\"\n" +
+            "      ],\n" +
+            "      \"notes\": \"Used both for hello and goodbye.\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"externalPhraseId\": \"990e8400-e29b-41d4-a716-446655440444\",\n" +
+            "      \"originalPhrase\": \"ありがとう\",\n" +
+            "      \"originalLanguage\": \"Japanese\",\n" +
+            "      \"meaning\": \"Thank you\",\n" +
+            "      \"meaningLanguage\": \"English\",\n" +
+            "      \"phraseTags\": [\n" +
+            "        \"gratitude\"\n" +
+            "      ],\n" +
+            "      \"notes\": \"Formal thanks in Japanese.\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"externalPhraseId\": \"aa0e8400-e29b-41d4-a716-446655440555\",\n" +
+            "      \"originalPhrase\": \"Olá\",\n" +
+            "      \"originalLanguage\": \"Portuguese\",\n" +
+            "      \"meaning\": \"Hello\",\n" +
+            "      \"meaningLanguage\": \"English\",\n" +
+            "      \"phraseTags\": [\n" +
+            "        \"greeting\"\n" +
+            "      ],\n" +
+            "      \"notes\": \"Common greeting in Portuguese.\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"externalPhraseId\": \"bb0e8400-e29b-41d4-a716-446655440666\",\n" +
+            "      \"originalPhrase\": \"Hallo\",\n" +
+            "      \"originalLanguage\": \"Dutch\",\n" +
+            "      \"meaning\": \"Hello\",\n" +
+            "      \"meaningLanguage\": \"English\",\n" +
+            "      \"phraseTags\": [\n" +
+            "        \"greeting\"\n" +
+            "      ],\n" +
+            "      \"notes\": \"Dutch greeting.\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"externalPhraseId\": \"cc0e8400-e29b-41d4-a716-446655440777\",\n" +
+            "      \"originalPhrase\": \"Salam\",\n" +
+            "      \"originalLanguage\": \"Arabic\",\n" +
+            "      \"meaning\": \"Peace/Hello\",\n" +
+            "      \"meaningLanguage\": \"English\",\n" +
+            "      \"phraseTags\": [\n" +
+            "        \"greeting\"\n" +
+            "      ],\n" +
+            "      \"notes\": \"Common Arabic greeting.\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"externalPhraseId\": \"dd0e8400-e29b-41d4-a716-446655440888\",\n" +
+            "      \"originalPhrase\": \"Привет\",\n" +
+            "      \"originalLanguage\": \"Russian\",\n" +
+            "      \"meaning\": \"Hi\",\n" +
+            "      \"meaningLanguage\": \"English\",\n" +
+            "      \"phraseTags\": [\n" +
+            "        \"greeting\"\n" +
+            "      ],\n" +
+            "      \"notes\": \"Informal Russian greeting.\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"externalPhraseId\": \"ee0e8400-e29b-41d4-a716-446655440999\",\n" +
+            "      \"originalPhrase\": \"Namaste\",\n" +
+            "      \"originalLanguage\": \"Hindi\",\n" +
+            "      \"meaning\": \"Greetings\",\n" +
+            "      \"meaningLanguage\": \"English\",\n" +
+            "      \"phraseTags\": [\n" +
+            "        \"greeting\",\n" +
+            "        \"formal\"\n" +
+            "      ],\n" +
+            "      \"notes\": \"Traditional Indian greeting.\"\n" +
+            "    }\n" +
+            "  ]\n" +
+            "}";
+
 
     public static final String PHRASE_GET_SINGLE_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +

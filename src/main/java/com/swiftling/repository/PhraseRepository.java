@@ -29,6 +29,8 @@ public interface PhraseRepository extends JpaRepository<Phrase, Long> {
                                                                  @Param("status") String status,
                                                                  @Param("language") String language);
 
+    List<Phrase> findTop10ByOwnerUserAccountIdOrderByInsertDateTimeDesc(UUID ownerUserAccountId);
+    
     @Query(value = """
             SELECT DISTINCT language FROM (
              SELECT original_language AS language FROM phrases

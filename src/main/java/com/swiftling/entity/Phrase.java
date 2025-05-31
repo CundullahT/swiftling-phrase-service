@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -46,6 +47,9 @@ public class Phrase extends BaseEntity {
 
     @Column(nullable = false)
     private UUID ownerUserAccountId;
+
+    @Column(nullable = false)
+    private LocalDateTime insertDateTime;
 
     public void addTag(Tag tag) {
         PhraseTag pt = new PhraseTag(this, tag);

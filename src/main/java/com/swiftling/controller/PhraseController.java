@@ -31,7 +31,7 @@ public class PhraseController {
     }
 
     @PostMapping("/add-phrase")
-    @Operation(summary = "Add a new phrase to learn.",
+    @Operation(summary = "Add a new phrase to learn for the logged in user.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhraseDTO.class),
                             examples = @ExampleObject(value = SwaggerExamples.PHRASE_CREATE_REQUEST_EXAMPLE))))
@@ -65,7 +65,7 @@ public class PhraseController {
     }
 
     @GetMapping("/phrases")
-    @Operation(summary = "Get all the phrases with/without status and language filters.")
+    @Operation(summary = "Get all the phrases created by the currently logged in user, with/without status and language filters.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The phrases have been retrieved successfully.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
@@ -85,6 +85,31 @@ public class PhraseController {
                 .statusCode(HttpStatus.OK)
                 .success(true)
                 .message("The phrases have been retrieved successfully.")
+                .data(phrases)
+                .build());
+
+    }
+
+    @GetMapping("/last-ten-phrases")
+    @Operation(summary = "Get the last 10 phrases created by the currently logged in user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The last 10 phrases have been retrieved successfully.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_GET_LAST_TEN_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "403", description = "Access is denied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "503", description = "The external ID of the user account could not be retrieved.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
+    public ResponseEntity<ResponseWrapper> getLastTenPhrases() {
+
+        List<PhraseDTO> phrases = phraseService.getLastTenPhrases();
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .statusCode(HttpStatus.OK)
+                .success(true)
+                .message("The last 10 phrases have been retrieved successfully.")
                 .data(phrases)
                 .build());
 
@@ -141,7 +166,7 @@ public class PhraseController {
     }
 
     @GetMapping("/quiz-languages")
-    @Operation(summary = "Get all the quiz language options.")
+    @Operation(summary = "Get all the quiz language options for the logged in user.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The quiz languages have been retrieved successfully.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
@@ -166,7 +191,7 @@ public class PhraseController {
     }
 
     @GetMapping("/tags")
-    @Operation(summary = "Get all the tag options.")
+    @Operation(summary = "Get all the tag options for the logged in user.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The tags have been retrieved successfully.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),

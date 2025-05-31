@@ -11,6 +11,8 @@ public interface PhraseService {
 
     List<PhraseDTO> getPhrases(String status, String language);
 
+    List<PhraseDTO> getLastTenPhrases();
+
     PhraseDTO getPhraseDetails(UUID externalPhraseId);
 
     List<String> getLanguages();
