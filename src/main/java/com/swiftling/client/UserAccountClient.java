@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface UserAccountClient {
 
     @GetMapping("/api/v1/account/get-external-id")
-    ResponseEntity<UserAccountResponseDTO> getNonCompletedCountByAssignedManager();
+    ResponseEntity<UserAccountResponseDTO> getUserAccountExternalId();
 
 }
