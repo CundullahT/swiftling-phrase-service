@@ -13,35 +13,7 @@ public class SwaggerExamples {
             "    \"greeting\",\n" +
             "    \"basic\"\n" +
             "  ],\n" +
-            "  \"notes\": \"Common polite greeting in French.\",\n" +
-            "  \"ownerUserAccountId\": \"123e4567-e89b-12d3-a456-426614174000\"\n" +
-            "}";
-
-    public static final String USER_UPDATE_REQUEST_EXAMPLE = "{\n" +
-            "  \"firstname\": \"John\",\n" +
-            "  \"lastname\": \"Doe\",\n" +
-            "  \"email\": \"john.doe@example.com\",\n" +
-            "}";
-
-    public static final String RESET_PASSWORD_REQUEST_EXAMPLE = "{\n" +
-            "  \"newPassword\": \"Pa$$w0rd123\"\n" +
-            "}";
-
-    public static final String CHANGE_PASSWORD_REQUEST_EXAMPLE = "{\n" +
-            "  \"currentPassword\": \"Pa$$w0rd123\"\n" +
-            "  \"newPassword\": \"Pa$$w0rd123\"\n" +
-            "}";
-
-    public static final String RESET_PASSWORD_RESPONSE_EXAMPLE = "{\n" +
-            "  \"success\": true,\n" +
-            "  \"statusCode\": \"OK\",\n" +
-            "  \"message\": \"Password has been reset successfully.\"\n" +
-            "}";
-
-    public static final String CHANGE_PASSWORD_RESPONSE_EXAMPLE = "{\n" +
-            "  \"success\": true,\n" +
-            "  \"statusCode\": \"OK\",\n" +
-            "  \"message\": \"Password has been changed successfully.\"\n" +
+            "  \"notes\": \"Common polite greeting in French.\"\n" +
             "}";
 
     public static final String PHRASE_CREATE_RESPONSE_EXAMPLE = "{\n" +
@@ -58,8 +30,7 @@ public class SwaggerExamples {
             "      \"greeting\",\n" +
             "      \"basic\"\n" +
             "    ],\n" +
-            "    \"notes\": \"Common polite greeting in French.\",\n" +
-            "    \"ownerUserAccountId\": \"123e4567-e89b-12d3-a456-426614174000\"\n" +
+            "    \"notes\": \"Common polite greeting in French.\"\n" +
             "  }\n" +
             "}";
 
@@ -90,10 +61,27 @@ public class SwaggerExamples {
             "      \"phraseTags\": [\n" +
             "        \"greeting\"\n" +
             "      ],\n" +
-            "      \"notes\": \"Used in the morning hours.\",\n" +
-            "      \"ownerUserAccountId\": \"223e4567-e89b-12d3-a456-426614174111\"\n" +
+            "      \"notes\": \"Used in the morning hours.\"\n" +
             "    }\n" +
             "  ]\n" +
+            "}";
+
+    public static final String PHRASE_GET_SINGLE_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": true,\n" +
+            "  \"statusCode\": \"OK\",\n" +
+            "  \"message\": \"The phrase has been retrieved successfully.\",\n" +
+            "  \"data\": {\n" +
+            "     \"externalPhraseId\": \"550e8400-e29b-41d4-a716-446655440000\",\n" +
+            "     \"originalPhrase\": \"Bonjour\",\n" +
+            "     \"originalLanguage\": \"French\",\n" +
+            "     \"meaning\": \"Hello\",\n" +
+            "     \"meaningLanguage\": \"English\",\n" +
+            "     \"phraseTags\": [\n" +
+            "       \"greeting\",\n" +
+            "       \"basic\"\n" +
+            "     ],\n" +
+            "     \"notes\": \"Common French greeting.\"\n" +
+            "  }\n" +
             "}";
 
     public static final String LANGUAGE_GET_ALL_RESPONSE_EXAMPLE = "{\n" +
@@ -246,44 +234,6 @@ public class SwaggerExamples {
             "    \"pronoun\"\n" +
             "  ]\n" +
             "}";
-
-    public static final String USER_UPDATE_RESPONSE_EXAMPLE = "{\n" +
-            "  \"success\": true,\n" +
-            "  \"statusCode\": \"OK\",\n" +
-            "  \"message\": \"The regular user is successfully updated.\",\n" +
-            "  \"data\": {\n" +
-            "    \"firstname\": \"John\",\n" +
-            "    \"lastname\": \"Doe\",\n" +
-            "    \"username\": \"john.doe\",\n" +
-            "    \"email\": \"john.doe@example.com\",\n" +
-            "    \"enabled\": true,\n" +
-            "    \"role\": {\n" +
-            "      \"description\": \"User\"\n" +
-            "    }\n" +
-            "  }\n" +
-            "}";
-    
-    public static final String USER_ENABLE_RESPONSE_EXAMPLE = "{\n" +
-            "  \"success\": true,\n" +
-            "  \"statusCode\": \"OK\",\n" +
-            "  \"message\": \"The user account has been enabled successfully.\"\n" +
-            "}";
-    
-    public static final String USER_GET_RESPONSE_SINGLE_EXAMPLE = "{\n" +
-            "  \"success\": true,\n" +
-            "  \"statusCode\": \"OK\",\n" +
-            "  \"message\": \"The regular user is successfully retrieved.\",\n" +
-            "  \"data\": {\n" +
-            "    \"firstname\": \"John\",\n" +
-            "    \"lastname\": \"Doe\",\n" +
-            "    \"username\": \"john.doe\",\n" +
-            "    \"email\": \"john.doe@example.com\",\n" +
-            "    \"enabled\": true,\n" +
-            "    \"role\": {\n" +
-            "      \"description\": \"User\"\n" +
-            "    }\n" +
-            "  }\n" +
-            "}";
     
     public static final String ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": false,\n" +
@@ -299,50 +249,23 @@ public class SwaggerExamples {
             "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
             "}";
 
-    public static final String USER_FORGOT_PASSWORD_RESPONSE_EXAMPLE = "{\n" +
-            "  \"success\": true,\n" +
-            "  \"statusCode\": \"OK\",\n" +
-            "  \"message\": \"The forgot password email was sent successfully.\"\n" +
-            "}";
-
     public static final String PHRASE_ALREADY_EXISTS_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": false,\n" +
             "  \"message\": \"The given phrase already exists: demo phrase\",\n" +
             "  \"httpStatus\": \"CONFLICT\",\n" +
             "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
             "}";
-    
-    public static final String USER_NOT_FOUND_RESPONSE_EXAMPLE = "{\n" +
+
+    public static final String PHRASE_NOT_FOUND_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": false,\n" +
-            "  \"message\": \"The user account does not exist: + sample@email.com\",\n" +
-            "  \"httpStatus\": \"NOT_FOUND\",\n" +
+            "  \"message\": \"The phrase does not exist: 550e8400-e29b-41d4-a716-446655440000\",\n" +
+            "  \"httpStatus\": \"CONFLICT\",\n" +
             "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
             "}";
 
-    public static final String TOKEN_NOT_FOUND_RESPONSE_EXAMPLE = "{\n" +
+    public static final String PHRASE_NOT_DELETED_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": false,\n" +
-            "  \"message\": \"The token does not exist.\",\n" +
-            "  \"httpStatus\": \"NOT_FOUND\",\n" +
-            "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
-            "}";
-
-    public static final String TOKEN_EXPIRED_RESPONSE_EXAMPLE = "{\n" +
-            "  \"success\": false,\n" +
-            "  \"message\": \"The token has expired.\",\n" +
-            "  \"httpStatus\": \"NOT_FOUND\",\n" +
-            "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
-            "}";
-
-    public static final String USER_ALREADY_ENABLED_RESPONSE_EXAMPLE = "{\n" +
-            "  \"success\": false,\n" +
-            "  \"message\": \"The user account is already enabled/verified.\",\n" +
-            "  \"httpStatus\": \"NOT_FOUND\",\n" +
-            "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
-            "}";
-
-    public static final String USER_NOT_DELETED_RESPONSE_EXAMPLE = "{\n" +
-            "  \"success\": false,\n" +
-            "  \"message\": \"User can not be deleted.\",\n" +
+            "  \"message\": \"Phrase can not be deleted.\",\n" +
             "  \"httpStatus\": \"CONFLICT\",\n" +
             "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
             "}";

@@ -10,6 +10,7 @@ import com.swiftling.enums.Language;
 import com.swiftling.enums.Status;
 import com.swiftling.exception.ExternalIdNotRetrievedException;
 import com.swiftling.exception.PhraseAlreadyExistsException;
+import com.swiftling.exception.PhraseNotFoundException;
 import com.swiftling.repository.PhraseRepository;
 import com.swiftling.repository.TagRepository;
 import com.swiftling.service.KeycloakService;
@@ -42,7 +43,7 @@ public class PhraseServiceImpl implements PhraseService {
     public PhraseDTO create(PhraseDTO phraseDTO) {
 
         phraseRepository
-                .findByOriginalPhraseAndOwnerUserAccountId(phraseDTO.getOriginalPhrase(), phraseDTO.getOwnerUserAccountId())
+                .findByOriginalPhraseAndOwnerUserAccountId(phraseDTO.getOriginalPhrase(), getOwnerUserAccountId())
                 .ifPresent(existingPhrase -> {
                     throw new PhraseAlreadyExistsException("The given phrase already exists: " + existingPhrase.getOriginalPhrase());
                 });
@@ -69,6 +70,7 @@ public class PhraseServiceImpl implements PhraseService {
 
         return phraseRepository.findAllByOwnerUserAccountIdAndStatusAndLanguage(getOwnerUserAccountId(), status, language)
                 .stream().map(phrase -> {
+
                     PhraseDTO phraseDTO = mapperUtil.convert(phrase, new PhraseDTO());
 
                     phraseDTO.setOriginalLanguage(phrase.getOriginalLanguage().getValue());
@@ -77,8 +79,23 @@ public class PhraseServiceImpl implements PhraseService {
 
                     return phraseDTO;
 
-                })
-                .toList();
+                }).toList();
+
+    }
+
+    @Override
+    public PhraseDTO getPhraseDetails(UUID externalPhraseId) {
+
+        Phrase phrase = phraseRepository.findByExternalPhraseIdAndOwnerUserAccountId(externalPhraseId, getOwnerUserAccountId())
+                .orElseThrow(() -> new PhraseNotFoundException("The phrase does not exist: " + externalPhraseId));
+
+        PhraseDTO phraseDTO = mapperUtil.convert(phrase, new PhraseDTO());
+
+        phraseDTO.setOriginalLanguage(phrase.getOriginalLanguage().getValue());
+        phraseDTO.setMeaningLanguage(phrase.getMeaningLanguage().getValue());
+        phraseDTO.setStatus(phrase.getStatus().getValue());
+
+        return phraseDTO;
 
     }
 

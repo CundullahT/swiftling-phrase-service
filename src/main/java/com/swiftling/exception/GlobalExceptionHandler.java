@@ -45,6 +45,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionWrapper);
     }
 
+    @ExceptionHandler(PhraseNotFoundException.class)
+    public ResponseEntity<ExceptionWrapper> handlePhraseNotFoundException(Throwable exception) {
+        log.error(exception.getMessage());
+        ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
+                .success(false)
+                .message(exception.getMessage())
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .localDateTime(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionWrapper);
+    }
+
     @ExceptionHandler(ExternalIdNotRetrievedException.class)
     public ResponseEntity<ExceptionWrapper> handleExternalIdNotRetrievedException(Throwable exception) {
         log.error(exception.getMessage());

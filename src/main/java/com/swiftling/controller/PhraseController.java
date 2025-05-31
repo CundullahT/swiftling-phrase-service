@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin("http://localhost:8762")
@@ -85,6 +86,34 @@ public class PhraseController {
                 .success(true)
                 .message("The phrases have been retrieved successfully.")
                 .data(phrases)
+                .build());
+
+    }
+
+    @GetMapping("/phrase-details/{phrase-id}")
+    @Operation(summary = "Get the details of a phrase by using the External Phrase ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The phrase has been retrieved successfully.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_GET_SINGLE_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "403", description = "Access is denied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "404", description = "The user account does not exist: + sample@email.com",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_NOT_FOUND_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "503", description = "The external ID of the user account could not be retrieved.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
+    public ResponseEntity<ResponseWrapper> getPhrases(@PathVariable("phrase-id") UUID externalPhraseId) {
+
+        PhraseDTO phrase = phraseService.getPhraseDetails(externalPhraseId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .statusCode(HttpStatus.OK)
+                .success(true)
+                .message("The phrase has been retrieved successfully.")
+                .data(phrase)
                 .build());
 
     }

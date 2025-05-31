@@ -2,8 +2,6 @@ package com.swiftling.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.swiftling.enums.Language;
-import com.swiftling.enums.Status;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -43,7 +41,5 @@ public class PhraseDTO {
 
 //    @Setter(AccessLevel.NONE)
 //    private Integer consecutiveCorrectAnswerAmount;
-
-    private UUID ownerUserAccountId;
 
 }

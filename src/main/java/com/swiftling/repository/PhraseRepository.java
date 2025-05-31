@@ -15,6 +15,8 @@ public interface PhraseRepository extends JpaRepository<Phrase, Long> {
 
     Optional<Phrase> findByOriginalPhraseAndOwnerUserAccountId(String originalPhrase, UUID ownerUserAccountId);
 
+    Optional<Phrase> findByExternalPhraseIdAndOwnerUserAccountId(UUID externalPhraseId, UUID ownerUserAccountId);
+
     @Query(value = """
             SELECT * FROM phrases
              WHERE owner_user_account_id = :ownerUserAccountId

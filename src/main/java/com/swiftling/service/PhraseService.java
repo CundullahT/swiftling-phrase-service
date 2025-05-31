@@ -3,12 +3,15 @@ package com.swiftling.service;
 import com.swiftling.dto.PhraseDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface PhraseService {
 
     PhraseDTO create(PhraseDTO phraseDTO);
 
     List<PhraseDTO> getPhrases(String status, String language);
+
+    PhraseDTO getPhraseDetails(UUID externalPhraseId);
 
     List<String> getLanguages();
 
