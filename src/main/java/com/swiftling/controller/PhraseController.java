@@ -215,4 +215,38 @@ public class PhraseController {
 
     }
 
+    @PutMapping("/update-phrase/{phrase-id}")
+    @Operation(summary = "Update an existing phrase created by the logged in user.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhraseDTO.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_UPDATE_REQUEST_EXAMPLE))))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The phrase has been updated successfully.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_UPDATE_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "409", description = "The given phrase already exists: demo phrase",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_NOT_FOUND_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "400", description = "Invalid Input(s)",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.VALIDATION_EXCEPTION_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "403", description = "Access is denied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "503", description = "The external ID of the user account could not be retrieved.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
+    public ResponseEntity<ResponseWrapper> update(@PathVariable("phrase-id") UUID externalPhraseId, @Valid @RequestBody PhraseDTO phraseDTO) {
+
+        PhraseDTO updatedPhrase = phraseService.update(externalPhraseId, phraseDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .statusCode(HttpStatus.OK)
+                .success(true)
+                .message("The phrase has been updated successfully.")
+                .data(updatedPhrase)
+                .build());
+
+    }
+
 }

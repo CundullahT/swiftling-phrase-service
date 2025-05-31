@@ -16,6 +16,18 @@ public class SwaggerExamples {
             "  \"notes\": \"Common polite greeting in French.\"\n" +
             "}";
 
+    public static final String PHRASE_UPDATE_REQUEST_EXAMPLE = "{\n" +
+            "  \"originalPhrase\": \"Salut\",\n" +
+            "  \"originalLanguage\": \"FRENCH\",\n" +
+            "  \"meaning\": \"Hi\",\n" +
+            "  \"meaningLanguage\": \"ENGLISH\",\n" +
+            "  \"phraseTags\": [\n" +
+            "    \"greeting\",\n" +
+            "    \"informal\"\n" +
+            "  ],\n" +
+            "  \"notes\": \"Informal French greeting.\"\n" +
+            "}";
+
     public static final String PHRASE_CREATE_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +
             "  \"statusCode\": \"CREATED\",\n" +
@@ -33,6 +45,25 @@ public class SwaggerExamples {
             "    \"notes\": \"Common polite greeting in French.\"\n" +
             "  }\n" +
             "}";
+
+    public static final String PHRASE_UPDATE_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": true,\n" +
+            "  \"statusCode\": \"OK\",\n" +
+            "  \"message\": \"The phrase has been updated successfully.\",\n" +
+            "  \"data\": {\n" +
+            "    \"externalPhraseId\": \"550e8400-e29b-41d4-a716-446655440000\",\n" +
+            "    \"originalPhrase\": \"Salut\",\n" +
+            "    \"originalLanguage\": \"FRENCH\",\n" +
+            "    \"meaning\": \"Hi\",\n" +
+            "    \"meaningLanguage\": \"ENGLISH\",\n" +
+            "    \"phraseTags\": [\n" +
+            "      \"greeting\",\n" +
+            "      \"informal\"\n" +
+            "    ],\n" +
+            "    \"notes\": \"Informal French greeting.\"\n" +
+            "  }\n" +
+            "}";
+
 
     public static final String PHRASE_GET_ALL_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +

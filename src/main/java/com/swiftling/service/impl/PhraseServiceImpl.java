@@ -4,6 +4,7 @@ import com.swiftling.client.UserAccountClient;
 import com.swiftling.dto.PhraseDTO;
 import com.swiftling.dto.UserAccountResponseDTO;
 import com.swiftling.entity.Phrase;
+import com.swiftling.entity.PhraseTag;
 import com.swiftling.entity.Tag;
 import com.swiftling.enums.DefaultTag;
 import com.swiftling.enums.Language;
@@ -13,7 +14,6 @@ import com.swiftling.exception.PhraseAlreadyExistsException;
 import com.swiftling.exception.PhraseNotFoundException;
 import com.swiftling.repository.PhraseRepository;
 import com.swiftling.repository.TagRepository;
-import com.swiftling.service.KeycloakService;
 import com.swiftling.service.PhraseService;
 import com.swiftling.util.MapperUtil;
 import org.springframework.http.ResponseEntity;
@@ -29,14 +29,12 @@ public class PhraseServiceImpl implements PhraseService {
     private final PhraseRepository phraseRepository;
     private final MapperUtil mapperUtil;
     private final UserAccountClient userAccountClient;
-    private final KeycloakService keycloakService;
     private final TagRepository tagRepository;
 
-    public PhraseServiceImpl(PhraseRepository phraseRepository, MapperUtil mapperUtil, UserAccountClient userAccountClient, KeycloakService keycloakService, TagRepository tagRepository) {
+    public PhraseServiceImpl(PhraseRepository phraseRepository, MapperUtil mapperUtil, UserAccountClient userAccountClient, TagRepository tagRepository) {
         this.phraseRepository = phraseRepository;
         this.mapperUtil = mapperUtil;
         this.userAccountClient = userAccountClient;
-        this.keycloakService = keycloakService;
         this.tagRepository = tagRepository;
     }
 
@@ -63,7 +61,11 @@ public class PhraseServiceImpl implements PhraseService {
 
         Phrase savedPhrase = phraseRepository.save(phraseToSave);
 
-        return mapperUtil.convert(savedPhrase, new PhraseDTO());
+        PhraseDTO phraseToReturn = mapperUtil.convert(savedPhrase, new PhraseDTO());
+
+        setPhraseDTOTags(savedPhrase, phraseToReturn);
+
+        return phraseToReturn;
 
     }
 
@@ -78,6 +80,8 @@ public class PhraseServiceImpl implements PhraseService {
                     phraseDTO.setOriginalLanguage(phrase.getOriginalLanguage().getValue());
                     phraseDTO.setMeaningLanguage(phrase.getMeaningLanguage().getValue());
                     phraseDTO.setStatus(phrase.getStatus().getValue());
+
+                    setPhraseDTOTags(phrase, phraseDTO);
 
                     return phraseDTO;
 
@@ -97,6 +101,8 @@ public class PhraseServiceImpl implements PhraseService {
                     phraseDTO.setMeaningLanguage(phrase.getMeaningLanguage().getValue());
                     phraseDTO.setStatus(phrase.getStatus().getValue());
 
+                    setPhraseDTOTags(phrase, phraseDTO);
+
                     return phraseDTO;
 
                 }).toList();
@@ -114,6 +120,8 @@ public class PhraseServiceImpl implements PhraseService {
         phraseDTO.setOriginalLanguage(phrase.getOriginalLanguage().getValue());
         phraseDTO.setMeaningLanguage(phrase.getMeaningLanguage().getValue());
         phraseDTO.setStatus(phrase.getStatus().getValue());
+
+        setPhraseDTOTags(phrase, phraseDTO);
 
         return phraseDTO;
 
@@ -149,13 +157,39 @@ public class PhraseServiceImpl implements PhraseService {
 
     }
 
+    @Override
+    public PhraseDTO update(UUID externalPhraseId, PhraseDTO phraseDTO) {
+
+        Phrase foundPhrase = phraseRepository.findByExternalPhraseIdAndOwnerUserAccountId(externalPhraseId, getOwnerUserAccountId())
+                .orElseThrow(() -> new PhraseNotFoundException("The phrase does not exist: " + externalPhraseId));
+
+        Phrase phraseToUpdate = mapperUtil.convert(phraseDTO, new Phrase());
+
+        phraseToUpdate.setExternalPhraseId(foundPhrase.getExternalPhraseId());
+        phraseToUpdate.setConsecutiveCorrectAnswerAmount(0);
+        phraseToUpdate.setOriginalLanguage(Language.findByValue(phraseDTO.getOriginalLanguage()));
+        phraseToUpdate.setMeaningLanguage(Language.findByValue(phraseDTO.getMeaningLanguage()));
+        phraseToUpdate.setStatus(Status.IN_PROGRESS);
+        phraseToUpdate.setOwnerUserAccountId(foundPhrase.getOwnerUserAccountId());
+        phraseToUpdate.setInsertDateTime(LocalDateTime.now());
+
+        setPhraseTags(phraseToUpdate, phraseDTO);
+
+        Phrase updatedPhrase = phraseRepository.save(phraseToUpdate);
+
+        PhraseDTO phraseToReturn = mapperUtil.convert(updatedPhrase, new PhraseDTO());
+
+        setPhraseDTOTags(updatedPhrase, phraseToReturn);
+
+        return phraseToReturn;
+
+    }
+
     private UUID getOwnerUserAccountId() {
 
         UUID ownerUserAccountId;
 
-        String email = keycloakService.getLoggedInUserName();
-
-        ResponseEntity<UserAccountResponseDTO> response = userAccountClient.getNonCompletedCountByAssignedManager(email);
+        ResponseEntity<UserAccountResponseDTO> response = userAccountClient.getUserAccountExternalId();
 
         if(Objects.requireNonNull(response.getBody()).isSuccess() && Objects.requireNonNull(response.getBody()).getData() != null) {
             ownerUserAccountId = (UUID) response.getBody().getData();
@@ -169,6 +203,8 @@ public class PhraseServiceImpl implements PhraseService {
 
     private void setPhraseTags(Phrase phrase, PhraseDTO phraseDTO) {
 
+        phrase.getPhraseTags().clear();
+
         for (String tagName : phraseDTO.getPhraseTags()) {
             Tag tag = tagRepository.findByOwnerUserAccountIdAndTagName(phrase.getOwnerUserAccountId(), tagName)
                     .orElseGet(() -> {
@@ -177,6 +213,16 @@ public class PhraseServiceImpl implements PhraseService {
                         return tagRepository.save(newTag);
                     });
             phrase.addTag(tag);
+        }
+
+    }
+
+    private void setPhraseDTOTags(Phrase phrase, PhraseDTO phraseDTO) {
+
+        phraseDTO.getPhraseTags().clear();
+
+        for (PhraseTag phraseTag : phrase.getPhraseTags()) {
+            phraseDTO.getPhraseTags().add(phraseTag.getTag().getTagName());
         }
 
     }
