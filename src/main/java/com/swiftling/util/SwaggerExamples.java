@@ -63,6 +63,123 @@ public class SwaggerExamples {
             "  }\n" +
             "}";
 
+    public static final String LANGUAGE_GET_ALL_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": true,\n" +
+            "  \"statusCode\": \"CREATED\",\n" +
+            "  \"message\": \"The languages have been retrieved successfully.\",\n" +
+            "  \"data\": [\n" +
+            "    \"Afrikaans\",\n" +
+            "    \"Albanian\",\n" +
+            "    \"Amharic\",\n" +
+            "    \"Arabic\",\n" +
+            "    \"Armenian\",\n" +
+            "    \"Azerbaijani\",\n" +
+            "    \"Basque\",\n" +
+            "    \"Belarusian\",\n" +
+            "    \"Bengali\",\n" +
+            "    \"Bosnian\",\n" +
+            "    \"Bulgarian\",\n" +
+            "    \"Catalan\",\n" +
+            "    \"Cebuano\",\n" +
+            "    \"Chinese (Simplified)\",\n" +
+            "    \"Chinese (Traditional)\",\n" +
+            "    \"Corsican\",\n" +
+            "    \"Croatian\",\n" +
+            "    \"Czech\",\n" +
+            "    \"Danish\",\n" +
+            "    \"Dutch\",\n" +
+            "    \"English\",\n" +
+            "    \"Esperanto\",\n" +
+            "    \"Estonian\",\n" +
+            "    \"Finnish\",\n" +
+            "    \"French\",\n" +
+            "    \"Frisian\",\n" +
+            "    \"Galician\",\n" +
+            "    \"Georgian\",\n" +
+            "    \"German\",\n" +
+            "    \"Greek\",\n" +
+            "    \"Gujarati\",\n" +
+            "    \"Haitian Creole\",\n" +
+            "    \"Hausa\",\n" +
+            "    \"Hawaiian\",\n" +
+            "    \"Hebrew\",\n" +
+            "    \"Hindi\",\n" +
+            "    \"Hmong\",\n" +
+            "    \"Hungarian\",\n" +
+            "    \"Icelandic\",\n" +
+            "    \"Igbo\",\n" +
+            "    \"Indonesian\",\n" +
+            "    \"Irish\",\n" +
+            "    \"Italian\",\n" +
+            "    \"Japanese\",\n" +
+            "    \"Javanese\",\n" +
+            "    \"Kannada\",\n" +
+            "    \"Kazakh\",\n" +
+            "    \"Khmer\",\n" +
+            "    \"Kinyarwanda\",\n" +
+            "    \"Korean\",\n" +
+            "    \"Kurdish\",\n" +
+            "    \"Kyrgyz\",\n" +
+            "    \"Lao\",\n" +
+            "    \"Latin\",\n" +
+            "    \"Latvian\",\n" +
+            "    \"Lithuanian\",\n" +
+            "    \"Luxembourgish\",\n" +
+            "    \"Macedonian\",\n" +
+            "    \"Malagasy\",\n" +
+            "    \"Malay\",\n" +
+            "    \"Malayalam\",\n" +
+            "    \"Maltese\",\n" +
+            "    \"Maori\",\n" +
+            "    \"Marathi\",\n" +
+            "    \"Mongolian\",\n" +
+            "    \"Myanmar (Burmese)\",\n" +
+            "    \"Nepali\",\n" +
+            "    \"Norwegian\",\n" +
+            "    \"Nyanja (Chichewa)\",\n" +
+            "    \"Odia (Oriya)\",\n" +
+            "    \"Pashto\",\n" +
+            "    \"Persian\",\n" +
+            "    \"Polish\",\n" +
+            "    \"Portuguese\",\n" +
+            "    \"Punjabi\",\n" +
+            "    \"Romanian\",\n" +
+            "    \"Russian\",\n" +
+            "    \"Samoan\",\n" +
+            "    \"Scots Gaelic\",\n" +
+            "    \"Serbian\",\n" +
+            "    \"Sesotho\",\n" +
+            "    \"Shona\",\n" +
+            "    \"Sindhi\",\n" +
+            "    \"Sinhala (Sinhalese)\",\n" +
+            "    \"Slovak\",\n" +
+            "    \"Slovenian\",\n" +
+            "    \"Somali\",\n" +
+            "    \"Spanish\",\n" +
+            "    \"Sundanese\",\n" +
+            "    \"Swahili\",\n" +
+            "    \"Swedish\",\n" +
+            "    \"Tagalog (Filipino)\",\n" +
+            "    \"Tajik\",\n" +
+            "    \"Tamil\",\n" +
+            "    \"Tatar\",\n" +
+            "    \"Telugu\",\n" +
+            "    \"Thai\",\n" +
+            "    \"Turkish\",\n" +
+            "    \"Turkmen\",\n" +
+            "    \"Ukrainian\",\n" +
+            "    \"Urdu\",\n" +
+            "    \"Uyghur\",\n" +
+            "    \"Uzbek\",\n" +
+            "    \"Vietnamese\",\n" +
+            "    \"Welsh\",\n" +
+            "    \"Xhosa\",\n" +
+            "    \"Yiddish\",\n" +
+            "    \"Yoruba\",\n" +
+            "    \"Zulu\"\n" +
+            "  ]\n" +
+            "}";
+
     public static final String USER_UPDATE_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +
             "  \"statusCode\": \"OK\",\n" +

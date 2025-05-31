@@ -5,6 +5,7 @@ import com.swiftling.dto.PhraseDTO;
 import com.swiftling.dto.UserAccountResponseDTO;
 import com.swiftling.entity.Phrase;
 import com.swiftling.entity.Tag;
+import com.swiftling.enums.Language;
 import com.swiftling.exception.ExternalIdNotRetrievedException;
 import com.swiftling.exception.PhraseAlreadyExistsException;
 import com.swiftling.repository.PhraseRepository;
@@ -55,6 +56,11 @@ public class PhraseServiceImpl implements PhraseService {
 
         return mapperUtil.convert(savedPhrase, new PhraseDTO());
 
+    }
+
+    @Override
+    public List<Language> getLanguages() {
+        return List.of(Language.values());
     }
 
     private UUID getOwnerUserAccountId() {
