@@ -141,7 +141,7 @@ public class PhraseController {
     }
 
     @GetMapping("/quiz-languages")
-    @Operation(summary = "Get all the language options.")
+    @Operation(summary = "Get all the quiz language options.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The quiz languages have been retrieved successfully.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
