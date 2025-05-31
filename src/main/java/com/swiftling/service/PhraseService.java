@@ -8,7 +8,11 @@ public interface PhraseService {
 
     PhraseDTO create(PhraseDTO phraseDTO);
 
+    List<PhraseDTO> getPhrases(String status, String language);
+
     List<String> getLanguages();
+
+    List<String> getQuizLanguages();
 
     List<String> getTags();
 

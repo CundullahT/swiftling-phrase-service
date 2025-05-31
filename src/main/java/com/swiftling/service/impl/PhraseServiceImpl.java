@@ -7,6 +7,7 @@ import com.swiftling.entity.Phrase;
 import com.swiftling.entity.Tag;
 import com.swiftling.enums.DefaultTag;
 import com.swiftling.enums.Language;
+import com.swiftling.enums.Status;
 import com.swiftling.exception.ExternalIdNotRetrievedException;
 import com.swiftling.exception.PhraseAlreadyExistsException;
 import com.swiftling.repository.PhraseRepository;
@@ -18,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -51,6 +51,9 @@ public class PhraseServiceImpl implements PhraseService {
 
         phraseToSave.setExternalPhraseId(UUID.randomUUID());
         phraseToSave.setConsecutiveCorrectAnswerAmount(0);
+        phraseToSave.setOriginalLanguage(Language.findByValue(phraseDTO.getOriginalLanguage()));
+        phraseToSave.setMeaningLanguage(Language.findByValue(phraseDTO.getMeaningLanguage()));
+        phraseToSave.setStatus(Status.IN_PROGRESS);
         phraseToSave.setOwnerUserAccountId(getOwnerUserAccountId());
 
         setPhraseTags(phraseToSave, phraseDTO);
@@ -62,9 +65,32 @@ public class PhraseServiceImpl implements PhraseService {
     }
 
     @Override
+    public List<PhraseDTO> getPhrases(String status, String language) {
+
+        return phraseRepository.findAllByOwnerUserAccountIdAndStatusAndLanguage(getOwnerUserAccountId(), status, language)
+                .stream().map(phrase -> {
+                    PhraseDTO phraseDTO = mapperUtil.convert(phrase, new PhraseDTO());
+
+                    phraseDTO.setOriginalLanguage(phrase.getOriginalLanguage().getValue());
+                    phraseDTO.setMeaningLanguage(phrase.getMeaningLanguage().getValue());
+                    phraseDTO.setStatus(phrase.getStatus().getValue());
+
+                    return phraseDTO;
+
+                })
+                .toList();
+
+    }
+
+    @Override
     public List<String> getLanguages() {
         return Stream.of(Language.values())
                 .map(Language::getValue).toList();
+    }
+
+    @Override
+    public List<String> getQuizLanguages() {
+        return phraseRepository.findAllDistinctLanguages();
     }
 
     @Override
@@ -97,7 +123,7 @@ public class PhraseServiceImpl implements PhraseService {
         if(Objects.requireNonNull(response.getBody()).isSuccess() && Objects.requireNonNull(response.getBody()).getData() != null) {
             ownerUserAccountId = (UUID) response.getBody().getData();
         } else {
-            throw new ExternalIdNotRetrievedException("External ID of the user account can not be retrieved.");
+            throw new ExternalIdNotRetrievedException("The external ID of the user account could not be retrieved.");
         }
 
         return ownerUserAccountId;

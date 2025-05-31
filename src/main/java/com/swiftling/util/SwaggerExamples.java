@@ -63,6 +63,39 @@ public class SwaggerExamples {
             "  }\n" +
             "}";
 
+    public static final String PHRASE_GET_ALL_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": true,\n" +
+            "  \"statusCode\": \"OK\",\n" +
+            "  \"message\": \"The phrases have been retrieved successfully.\",\n" +
+            "  \"data\": [\n" +
+            "    {\n" +
+            "      \"externalPhraseId\": \"550e8400-e29b-41d4-a716-446655440000\",\n" +
+            "      \"originalPhrase\": \"Bonjour\",\n" +
+            "      \"originalLanguage\": \"French\",\n" +
+            "      \"meaning\": \"Hello\",\n" +
+            "      \"meaningLanguage\": \"English\",\n" +
+            "      \"phraseTags\": [\n" +
+            "        \"greeting\",\n" +
+            "        \"basic\"\n" +
+            "      ],\n" +
+            "      \"notes\": \"Common French greeting.\",\n" +
+            "      \"ownerUserAccountId\": \"123e4567-e89b-12d3-a456-426614174000\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"externalPhraseId\": \"660e8400-e29b-41d4-a716-446655440111\",\n" +
+            "      \"originalPhrase\": \"Guten Morgen\",\n" +
+            "      \"originalLanguage\": \"German\",\n" +
+            "      \"meaning\": \"Good morning\",\n" +
+            "      \"meaningLanguage\": \"English\",\n" +
+            "      \"phraseTags\": [\n" +
+            "        \"greeting\"\n" +
+            "      ],\n" +
+            "      \"notes\": \"Used in the morning hours.\",\n" +
+            "      \"ownerUserAccountId\": \"223e4567-e89b-12d3-a456-426614174111\"\n" +
+            "    }\n" +
+            "  ]\n" +
+            "}";
+
     public static final String LANGUAGE_GET_ALL_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +
             "  \"statusCode\": \"OK\",\n" +
@@ -180,6 +213,27 @@ public class SwaggerExamples {
             "  ]\n" +
             "}";
 
+    public static final String QUIZ_LANGUAGE_GET_ALL_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": true,\n" +
+            "  \"statusCode\": \"OK\",\n" +
+            "  \"message\": \"The quiz languages have been retrieved successfully.\",\n" +
+            "  \"data\": [\n" +
+            "    \"Afrikaans\",\n" +
+            "    \"Albanian\",\n" +
+            "    \"Chinese (Traditional)\",\n" +
+            "    \"Corsican\",\n" +
+            "    \"Croatian\",\n" +
+            "    \"Greek\",\n" +
+            "    \"Kazakh\",\n" +
+            "    \"Lithuanian\",\n" +
+            "    \"Luxembourgish\",\n" +
+            "    \"Macedonian\",\n" +
+            "    \"Turkish\",\n" +
+            "    \"Yoruba\",\n" +
+            "    \"Zulu\"\n" +
+            "  ]\n" +
+            "}";
+
     public static final String TAG_GET_ALL_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +
             "  \"statusCode\": \"OK\",\n" +
@@ -235,6 +289,13 @@ public class SwaggerExamples {
             "  \"success\": false,\n" +
             "  \"message\": \"Access is denied\",\n" +
             "  \"httpStatus\": \"FORBIDDEN\",\n" +
+            "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
+            "}";
+
+    public static final String USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": false,\n" +
+            "  \"message\": \"The external ID of the user account could not be retrieved.\",\n" +
+            "  \"httpStatus\": \"SERVICE_UNAVAILABLE\",\n" +
             "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
             "}";
 

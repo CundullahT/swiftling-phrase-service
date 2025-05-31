@@ -1,6 +1,7 @@
 package com.swiftling.entity;
 
 import com.swiftling.enums.Language;
+import com.swiftling.enums.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,9 @@ public class Phrase extends BaseEntity {
 
     @OneToMany(mappedBy = "phrase", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PhraseTag> phraseTags = new ArrayList<>();
+
+    @Column(nullable = false)
+    private Status status;
 
     private String notes;
 

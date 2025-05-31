@@ -3,7 +3,6 @@ package com.swiftling.controller;
 import com.swiftling.dto.PhraseDTO;
 import com.swiftling.dto.wrapper.ExceptionWrapper;
 import com.swiftling.dto.wrapper.ResponseWrapper;
-import com.swiftling.enums.Language;
 import com.swiftling.service.PhraseService;
 import com.swiftling.util.SwaggerExamples;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +46,10 @@ public class PhraseController {
                             examples = @ExampleObject(value = SwaggerExamples.VALIDATION_EXCEPTION_RESPONSE_EXAMPLE))),
             @ApiResponse(responseCode = "403", description = "Access is denied",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
-                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE)))})
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "503", description = "The external ID of the user account could not be retrieved.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
     public ResponseEntity<ResponseWrapper> create(@Valid @RequestBody PhraseDTO phraseDTO) {
 
         PhraseDTO createdPhrase = phraseService.create(phraseDTO);
@@ -57,6 +59,32 @@ public class PhraseController {
                 .success(true)
                 .message("The phrase has been created successfully.")
                 .data(createdPhrase)
+                .build());
+
+    }
+
+    @GetMapping("/phrases")
+    @Operation(summary = "Get all the phrases with/without status and language filters.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The phrases have been retrieved successfully.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_GET_ALL_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "403", description = "Access is denied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "503", description = "The external ID of the user account could not be retrieved.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
+    public ResponseEntity<ResponseWrapper> getPhrases(@RequestParam(value = "status", required = false) String status,
+                                                      @RequestParam(value = "lang", required = false) String language) {
+
+        List<PhraseDTO> phrases = phraseService.getPhrases(status, language);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .statusCode(HttpStatus.OK)
+                .success(true)
+                .message("The phrases have been retrieved successfully.")
+                .data(phrases)
                 .build());
 
     }
@@ -83,6 +111,31 @@ public class PhraseController {
 
     }
 
+    @GetMapping("/quiz-languages")
+    @Operation(summary = "Get all the language options.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The quiz languages have been retrieved successfully.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.QUIZ_LANGUAGE_GET_ALL_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "403", description = "Access is denied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "503", description = "The external ID of the user account could not be retrieved.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
+    public ResponseEntity<ResponseWrapper> getQuizLanguages() {
+
+        List<String> languages = phraseService.getQuizLanguages();
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .statusCode(HttpStatus.OK)
+                .success(true)
+                .message("The quiz languages have been retrieved successfully.")
+                .data(languages)
+                .build());
+
+    }
+
     @GetMapping("/tags")
     @Operation(summary = "Get all the tag options.")
     @ApiResponses(value = {
@@ -91,7 +144,10 @@ public class PhraseController {
                             examples = @ExampleObject(value = SwaggerExamples.TAG_GET_ALL_RESPONSE_EXAMPLE))),
             @ApiResponse(responseCode = "403", description = "Access is denied",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
-                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE)))})
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "503", description = "The external ID of the user account could not be retrieved.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
     public ResponseEntity<ResponseWrapper> getTags() {
 
         List<String> tags = phraseService.getTags();
