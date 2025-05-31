@@ -68,7 +68,7 @@ public class SwaggerExamples {
     public static final String PHRASE_GET_LAST_TEN_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +
             "  \"statusCode\": \"OK\",\n" +
-            "  \"message\": \"The phrases have been retrieved successfully.\",\n" +
+            "  \"message\": \"The last 10 phrases have been retrieved successfully.\",\n" +
             "  \"data\": [\n" +
             "    {\n" +
             "      \"externalPhraseId\": \"550e8400-e29b-41d4-a716-446655440000\",\n" +
