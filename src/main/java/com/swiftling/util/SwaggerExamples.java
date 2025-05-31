@@ -417,7 +417,7 @@ public class SwaggerExamples {
 
     public static final String PHRASE_NOT_DELETED_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": false,\n" +
-            "  \"message\": \"Phrase can not be deleted.\",\n" +
+            "  \"message\": \"The phrase can not be deleted: + 550e8400-e29b-41d4-a716-446655440000\",\n" +
             "  \"httpStatus\": \"CONFLICT\",\n" +
             "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
             "}";

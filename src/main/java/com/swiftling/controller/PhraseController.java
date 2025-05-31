@@ -115,7 +115,7 @@ public class PhraseController {
 
     }
 
-    @GetMapping("/phrase-details/{phrase-id}")
+    @GetMapping("/phrase-details")
     @Operation(summary = "Get the details of a phrase by using the External Phrase ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The phrase has been retrieved successfully.",
@@ -130,7 +130,7 @@ public class PhraseController {
             @ApiResponse(responseCode = "503", description = "The external ID of the user account could not be retrieved.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
                             examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
-    public ResponseEntity<ResponseWrapper> getPhrases(@PathVariable("phrase-id") UUID externalPhraseId) {
+    public ResponseEntity<ResponseWrapper> getPhrases(@RequestParam(value = "phrase-id", required = true) UUID externalPhraseId) {
 
         PhraseDTO phrase = phraseService.getPhraseDetails(externalPhraseId);
 
@@ -215,7 +215,7 @@ public class PhraseController {
 
     }
 
-    @PutMapping("/update-phrase/{phrase-id}")
+    @PutMapping("/update-phrase")
     @Operation(summary = "Update an existing phrase created by the logged in user.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhraseDTO.class),
@@ -236,7 +236,7 @@ public class PhraseController {
             @ApiResponse(responseCode = "503", description = "The external ID of the user account could not be retrieved.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
                             examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
-    public ResponseEntity<ResponseWrapper> update(@PathVariable("phrase-id") UUID externalPhraseId, @Valid @RequestBody PhraseDTO phraseDTO) {
+    public ResponseEntity<ResponseWrapper> update(@RequestParam(value = "phrase-id", required = true) UUID externalPhraseId, @Valid @RequestBody PhraseDTO phraseDTO) {
 
         PhraseDTO updatedPhrase = phraseService.update(externalPhraseId, phraseDTO);
 
@@ -245,6 +245,29 @@ public class PhraseController {
                 .success(true)
                 .message("The phrase has been updated successfully.")
                 .data(updatedPhrase)
+                .build());
+
+    }
+
+    @DeleteMapping("/delete-phrase")
+    @Operation(summary = "Delete an existing phrase belongs to the logged in user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "The phrase has been deleted successfully."),
+            @ApiResponse(responseCode = "404", description = "The phrase does not exist: 550e8400-e29b-41d4-a716-446655440000",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_NOT_FOUND_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "409", description = "The phrase can not be deleted: + 550e8400-e29b-41d4-a716-446655440000",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_NOT_DELETED_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "403", description = "Access is denied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE)))})
+    public ResponseEntity<ResponseWrapper> delete(@RequestParam(value = "phrase-id", required = true) UUID externalPhraseId) {
+
+        phraseService.delete(externalPhraseId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ResponseWrapper.builder()
+                .statusCode(HttpStatus.NO_CONTENT)
                 .build());
 
     }

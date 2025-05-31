@@ -11,6 +11,7 @@ import com.swiftling.enums.Language;
 import com.swiftling.enums.Status;
 import com.swiftling.exception.ExternalIdNotRetrievedException;
 import com.swiftling.exception.PhraseAlreadyExistsException;
+import com.swiftling.exception.PhraseCanNotBeDeletedException;
 import com.swiftling.exception.PhraseNotFoundException;
 import com.swiftling.repository.PhraseRepository;
 import com.swiftling.repository.TagRepository;
@@ -182,6 +183,20 @@ public class PhraseServiceImpl implements PhraseService {
         setPhraseDTOTags(updatedPhrase, phraseToReturn);
 
         return phraseToReturn;
+
+    }
+
+    @Override
+    public void delete(UUID externalPhraseId) {
+
+        Phrase phraseToDelete = phraseRepository.findByExternalPhraseIdAndOwnerUserAccountId(externalPhraseId, getOwnerUserAccountId())
+                .orElseThrow(() -> new PhraseNotFoundException("The phrase does not exist: " + externalPhraseId));
+
+        try {
+            phraseRepository.delete(phraseToDelete);
+        } catch (Throwable exception) {
+            throw new PhraseCanNotBeDeletedException("The phrase can not be deleted: " + externalPhraseId);
+        }
 
     }
 

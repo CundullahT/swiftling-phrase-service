@@ -24,4 +24,6 @@ public interface PhraseService {
 
     PhraseDTO update(UUID externalPhraseId, @Valid PhraseDTO phraseDTO);
 
+    void delete(UUID externalPhraseId);
+
 }
