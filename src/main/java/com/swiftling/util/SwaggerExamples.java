@@ -421,7 +421,21 @@ public class SwaggerExamples {
             "  \"httpStatus\": \"CONFLICT\",\n" +
             "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
             "}";
-    
+
+    public static final String FILE_NOT_FOUND_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": false,\n" +
+            "  \"message\": \"/some/file/location.txt (No such file or directory)\",\n" +
+            "  \"httpStatus\": \"NOT_FOUND\",\n" +
+            "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
+            "}";
+
+    public static final String IOEXCEPTION_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": false,\n" +
+            "  \"message\": \"An unexpected I/O error occurred while accessing a file.\",\n" +
+            "  \"httpStatus\": \"INTERNAL_SERVER_ERROR\",\n" +
+            "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
+            "}";
+
     public static final String VALIDATION_EXCEPTION_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": false,\n" +
             "  \"message\": \"Invalid Input(s)\",\n" +

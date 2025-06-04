@@ -12,6 +12,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({PhraseAlreadyExistsException.class, PhraseCanNotBeDeletedException.class})
     public ResponseEntity<ExceptionWrapper> handleConflictExceptions(Throwable exception) {
         log.error(exception.getMessage());
+        exception.printStackTrace();
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
                 .success(false)
                 .message(exception.getMessage())
@@ -48,6 +51,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PhraseNotFoundException.class)
     public ResponseEntity<ExceptionWrapper> handlePhraseNotFoundException(Throwable exception) {
         log.error(exception.getMessage());
+        exception.printStackTrace();
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
                 .success(false)
                 .message(exception.getMessage())
@@ -60,6 +64,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ExternalIdNotRetrievedException.class)
     public ResponseEntity<ExceptionWrapper> handleExternalIdNotRetrievedException(Throwable exception) {
         log.error(exception.getMessage());
+        exception.printStackTrace();
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
                 .success(false)
                 .message(exception.getMessage())
@@ -72,6 +77,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({UnknownStatusException.class, UnknownLanguageException.class})
     public ResponseEntity<ExceptionWrapper> handleUnknownValueExceptions(Throwable exception) {
         log.error(exception.getMessage());
+        exception.printStackTrace();
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
                 .success(false)
                 .message(exception.getMessage())
@@ -84,6 +90,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ExceptionWrapper> handleAccessDeniedException(Throwable exception) {
         log.error(exception.getMessage());
+        exception.printStackTrace();
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
                 .success(false)
                 .message(exception.getMessage())
@@ -93,10 +100,37 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exceptionWrapper);
     }
 
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<ExceptionWrapper> handleFileNotFoundException(FileNotFoundException exception) {
+        log.error(exception.getMessage());
+        exception.printStackTrace();
+        ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
+                .success(false)
+                .message(exception.getMessage())
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .localDateTime(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionWrapper);
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<ExceptionWrapper> handleIOException(IOException exception) {
+        log.error("An unexpected I/O error occurred while accessing a file. \n {}", exception.getMessage());
+        exception.printStackTrace();
+        ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
+                .success(false)
+                .message(exception.getMessage())
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                .localDateTime(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionWrapper);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionWrapper> handleValidationExceptions(MethodArgumentNotValidException exception) {
 
         log.error(exception.getMessage());
+        exception.printStackTrace();
 
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
                 .success(false)

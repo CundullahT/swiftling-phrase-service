@@ -1,5 +1,7 @@
 package com.swiftling.service.impl;
 
+import com.google.cloud.texttospeech.v1.*;
+import com.google.protobuf.ByteString;
 import com.swiftling.client.UserAccountClient;
 import com.swiftling.dto.PhraseDTO;
 import com.swiftling.dto.UserAccountResponseDTO;
@@ -20,6 +22,10 @@ import com.swiftling.util.MapperUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
@@ -196,6 +202,76 @@ public class PhraseServiceImpl implements PhraseService {
             phraseRepository.delete(phraseToDelete);
         } catch (Throwable exception) {
             throw new PhraseCanNotBeDeletedException("The phrase can not be deleted: " + externalPhraseId);
+        }
+
+    }
+
+    @Override
+    public void originalPhraseSynthesizeSpeech(UUID externalPhraseId, String outputFileName) throws IOException {
+
+        Phrase foundPhrase = phraseRepository.findByExternalPhraseIdAndOwnerUserAccountId(externalPhraseId, getOwnerUserAccountId())
+                .orElseThrow(() -> new PhraseNotFoundException("The phrase does not exist: " + externalPhraseId));
+
+        String languageCode = foundPhrase.getOriginalLanguage().getCode();
+
+        try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
+
+            SynthesisInput input = SynthesisInput.newBuilder()
+                    .setText(foundPhrase.getOriginalPhrase())
+                    .build();
+
+            VoiceSelectionParams voice = VoiceSelectionParams.newBuilder()
+                    .setLanguageCode(languageCode)
+                    .setSsmlGender(SsmlVoiceGender.NEUTRAL)
+                    .build();
+
+            AudioConfig audioConfig = AudioConfig.newBuilder()
+                    .setAudioEncoding(AudioEncoding.MP3)
+                    .build();
+
+            SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(input, voice, audioConfig);
+            ByteString audioContents = response.getAudioContent();
+
+            try (OutputStream out = new FileOutputStream(outputFileName)) {
+                out.write(audioContents.toByteArray());
+                System.out.println("Audio content written to file: " + outputFileName);
+            }
+
+        }
+
+    }
+
+    @Override
+    public void meaningPhraseSynthesizeSpeech(UUID externalPhraseId, String outputFileName) throws IOException {
+
+        Phrase foundPhrase = phraseRepository.findByExternalPhraseIdAndOwnerUserAccountId(externalPhraseId, getOwnerUserAccountId())
+                .orElseThrow(() -> new PhraseNotFoundException("The phrase does not exist: " + externalPhraseId));
+
+        String languageCode = foundPhrase.getMeaningLanguage().getCode();
+
+        try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
+
+            SynthesisInput input = SynthesisInput.newBuilder()
+                    .setText(foundPhrase.getMeaning())
+                    .build();
+
+            VoiceSelectionParams voice = VoiceSelectionParams.newBuilder()
+                    .setLanguageCode(languageCode)
+                    .setSsmlGender(SsmlVoiceGender.NEUTRAL)
+                    .build();
+
+            AudioConfig audioConfig = AudioConfig.newBuilder()
+                    .setAudioEncoding(AudioEncoding.MP3)
+                    .build();
+
+            SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(input, voice, audioConfig);
+            ByteString audioContents = response.getAudioContent();
+
+            try (OutputStream out = new FileOutputStream(outputFileName)) {
+                out.write(audioContents.toByteArray());
+                System.out.println("Audio content written to file: " + outputFileName);
+            }
+
         }
 
     }

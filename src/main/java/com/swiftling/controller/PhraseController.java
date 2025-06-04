@@ -3,6 +3,7 @@ package com.swiftling.controller;
 import com.swiftling.dto.PhraseDTO;
 import com.swiftling.dto.wrapper.ExceptionWrapper;
 import com.swiftling.dto.wrapper.ResponseWrapper;
+import com.swiftling.enums.Language;
 import com.swiftling.service.PhraseService;
 import com.swiftling.util.SwaggerExamples;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,9 +14,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -268,6 +273,55 @@ public class PhraseController {
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ResponseWrapper.builder()
                 .statusCode(HttpStatus.NO_CONTENT)
+                .build());
+
+    }
+
+    @PostMapping("pronunciation/original")
+    @Operation(summary = "Get a pronunciation of the original phrase created by the logged in user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The pronunciation of the original phrase has been retrieved successfully."),
+            @ApiResponse(responseCode = "404", description = "The phrase does not exist: 550e8400-e29b-41d4-a716-446655440000",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_NOT_FOUND_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "404", description = "/some/file/location.txt (No such file or directory)",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.FILE_NOT_FOUND_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "409", description = "/some/file/location.txt (No such file or directory)",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.IOEXCEPTION_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "403", description = "Access is denied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE)))})
+    public ResponseEntity<ResponseWrapper> getOriginalPronunciation(@RequestParam(value = "phrase-id", required = true) UUID externalPhraseId) throws Exception {
+
+        String audioFileName = "pronunciation.mp3";
+
+        phraseService.originalPhraseSynthesizeSpeech(externalPhraseId, audioFileName);
+
+        byte[] audioBytes = Files.readAllBytes(Paths.get(audioFileName));
+
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .statusCode(HttpStatus.OK)
+                .success(true)
+                .data(audioBytes)
+                .build());
+
+    }
+
+    @PostMapping("pronunciation/meaning")
+    public ResponseEntity<ResponseWrapper> getMeaningPronunciation(@RequestParam(value = "phrase-id", required = true) UUID externalPhraseId) throws Exception {
+
+        String audioFileName = "pronunciation.mp3";
+
+        phraseService.meaningPhraseSynthesizeSpeech(externalPhraseId, audioFileName);
+
+        byte[] audioBytes = Files.readAllBytes(Paths.get(audioFileName));
+
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .statusCode(HttpStatus.OK)
+                .success(true)
+                .data(audioBytes)
                 .build());
 
     }

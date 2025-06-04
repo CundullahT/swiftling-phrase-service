@@ -23,6 +23,7 @@
         <keycloak.version>25.0.3</keycloak.version>
         <resilience4j.version>3.2.1</resilience4j.version>
         <modelmapper.version>3.2.2</modelmapper.version>
+        <google-cloud.version>2.0.2</google-cloud.version>
     </properties>
 
     <dependencies>
@@ -115,6 +116,11 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-texttospeech</artifactId>
+            <version>${google-cloud.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
