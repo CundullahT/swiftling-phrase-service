@@ -4,7 +4,7 @@
 SwiftLing Phrase Service is a microservice responsible for handling phrase-related operations in the SwiftLing application. It is built using **Spring Boot** and registered with **Netflix Eureka** for service discovery. It integrates with **Keycloak** for authentication, **Spring Cloud Config** for centralized configuration, and **Zipkin** for distributed tracing.
 
 ## Prerequisites
-Ensure the following dependencies are installed and configured:
+Ensure the following dependencies and configurations are installed and added:
 - **Java 21 or later**
 - **Maven 3.9+** (compatible with Java 21)
 - **Docker** (for running Zipkin and Keycloak via containers)
@@ -13,21 +13,24 @@ Ensure the following dependencies are installed and configured:
 - **Netflix Eureka Server** (Service Discovery) (Example Eureka Server Repository = https://github.com/CundullahT/swiftling-discovery-service.git)
 - **Spring Cloud Config Server** (Configuration Management) (Example Config Server Repository = https://github.com/CundullahT/swiftling-config-service.git)
 - **Zipkin Server** (Distributed Tracing) **NOTE:** You can find the needed Docker command at the end of this document.
+- **Google Cloud Service Account API Key** (for getting pronunciations of the phrases)
 
 ## Environment Variables
 The following environment variables must be set for the application to function properly:
 
-| Variable Name                  | Description |
-|--------------------------------|-------------|
-| `KEYCLOAK_CLIENT_SECRET`      | The client secret for the configured Keycloak client (retrieve from Keycloak's client credentials tab). |
-| `KEYCLOAK_SERVICE`            | Base URL of the Keycloak server (e.g., `http://localhost:8080`). |
-| `LOG_TRACE_SERVICE`           | Base URL of the Zipkin server (e.g., `http://localhost:9411`). |
-| `SWIFTLING_CONFIG_SERVICE`    | Base URL of the Spring Cloud Config Server (e.g., `http://localhost:8888`). |
-| `SWIFTLING_DISCOVERY_SERVICE` | Base URL of the Eureka server (e.g., `http://localhost:8761`). |
-| `SWIFTLING_PHRASE_DB_URL`     | JDBC URL for the Phrase Service database (e.g., `jdbc:postgresql://localhost:5432/swiftling_phrase_db`). |
-| `SWIFTLING_PHRASE_DB_USERNAME`| Database username for the Phrase Service database (set your own username). |
-| `SWIFTLING_PHRASE_DB_PASSWORD`| Database password for the Phrase Service database (set your own password). |
-| `SWIFTLING_PROFILE`           | Active Spring profile (e.g., `local`, `dev`, `prod`). |
+| Variable Name                     | Description                                                                                                  |
+|-----------------------------------|--------------------------------------------------------------------------------------------------------------|
+| `KEYCLOAK_CLIENT_SECRET`          | The client secret for the configured Keycloak client (retrieve from Keycloak's client credentials tab).      |
+| `KEYCLOAK_SERVICE`                | Base URL of the Keycloak server (e.g., `http://localhost:8080`).                                             |
+| `LOG_TRACE_SERVICE`               | Base URL of the Zipkin server (e.g., `http://localhost:9411`).                                               |
+| `SWIFTLING_CONFIG_SERVICE`        | Base URL of the Spring Cloud Config Server (e.g., `http://localhost:8888`).                                  |
+| `SWIFTLING_DISCOVERY_SERVICE`     | Base URL of the Eureka server (e.g., `http://localhost:8761`).                                               |
+| `SWIFTLING_PHRASE_DB_URL`         | JDBC URL for the Phrase Service database (e.g., `jdbc:postgresql://localhost:5432/swiftling_phrase_db`).     |
+| `SWIFTLING_PHRASE_DB_USERNAME`    | Database username for the Phrase Service database (set your own username).                                   |
+| `SWIFTLING_PHRASE_DB_PASSWORD`    | Database password for the Phrase Service database (set your own password).                                   |
+| `SWIFTLING_PROFILE`               | Active Spring profile (e.g., `local`, `dev`, `prod`).                                                        |
+| `SWIFTLING_HOSTNAME`              | Hostname (if available, if none `demo` can be used).                                                         |
+| `GOOGLE_APPLICATION_CREDENTIALS`  | The path/location of the Google Cloud Service Account API Key file (e.g., `/Users/user/gc_key/my_key.json`). |
 
 ## Running the Application
 1. Clone the repository:
