@@ -49,6 +49,8 @@ The following environment variables must be set for the application to function 
    export SWIFTLING_PHRASE_DB_USERNAME=your_database_username
    export SWIFTLING_PHRASE_DB_PASSWORD=your_database_password
    export SWIFTLING_PROFILE=dev
+   export SWIFTLING_HOSTNAME=demo
+   export GOOGLE_APPLICATION_CREDENTIALS=your_google_cloud_service_account_api_key_path
    ```
    For Windows (Command Prompt):
    ```cmd
@@ -61,6 +63,8 @@ The following environment variables must be set for the application to function 
    set SWIFTLING_PHRASE_DB_PASSWORD=your_database_password
    set SWIFTLING_PHRASE_DB_USERNAME=your_database_username
    set SWIFTLING_PROFILE=dev
+   set SWIFTLING_HOSTNAME=demo
+   set GOOGLE_APPLICATION_CREDENTIALS=your_google_cloud_service_account_api_key_path
    ```
 3. Build the project using Maven:
    ```sh
