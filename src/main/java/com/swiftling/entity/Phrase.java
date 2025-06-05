@@ -26,18 +26,21 @@ public class Phrase extends BaseEntity {
     private String originalPhrase;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Language originalLanguage;
 
     @Column(nullable = false)
     private String meaning;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Language meaningLanguage;
 
     @OneToMany(mappedBy = "phrase", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PhraseTag> phraseTags = new ArrayList<>();
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     private String notes;
@@ -45,7 +48,7 @@ public class Phrase extends BaseEntity {
     @Column(nullable = false)
     private Integer consecutiveCorrectAnswerAmount;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private UUID ownerUserAccountId;
 
     @Column(nullable = false)

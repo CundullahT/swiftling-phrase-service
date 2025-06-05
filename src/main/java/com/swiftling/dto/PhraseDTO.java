@@ -3,7 +3,6 @@ package com.swiftling.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -23,13 +22,13 @@ public class PhraseDTO {
     @NotBlank(message = "Original Phrase is a required field.")
     private String originalPhrase;
 
-    @NotNull(message = "Original Language is a required field.")
+    @NotBlank(message = "Original Language is a required field.")
     private String originalLanguage;
 
     @NotBlank(message = "Meaning is a required field.")
     private String meaning;
 
-    @NotNull(message = "Meaning Language is a required field.")
+    @NotBlank(message = "Meaning Language is a required field.")
     private String meaningLanguage;
 
     private List<String> phraseTags;

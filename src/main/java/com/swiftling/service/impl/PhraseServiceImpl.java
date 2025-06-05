@@ -19,10 +19,10 @@ import com.swiftling.repository.PhraseRepository;
 import com.swiftling.repository.TagRepository;
 import com.swiftling.service.PhraseService;
 import com.swiftling.util.MapperUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
 
+@Slf4j
 @Service
 public class PhraseServiceImpl implements PhraseService {
 
@@ -278,17 +279,25 @@ public class PhraseServiceImpl implements PhraseService {
 
     private UUID getOwnerUserAccountId() {
 
-        UUID ownerUserAccountId;
+        try {
 
-        ResponseEntity<UserAccountResponseDTO> response = userAccountClient.getUserAccountExternalId();
+            UUID ownerUserAccountId;
 
-        if(Objects.requireNonNull(response.getBody()).isSuccess() && Objects.requireNonNull(response.getBody()).getData() != null) {
-            ownerUserAccountId = (UUID) response.getBody().getData();
-        } else {
+            ResponseEntity<UserAccountResponseDTO> response = userAccountClient.getUserAccountExternalId();
+
+            if (Objects.requireNonNull(response.getBody()).isSuccess() && Objects.requireNonNull(response.getBody()).getData() != null) {
+                ownerUserAccountId = (UUID) response.getBody().getData();
+            } else {
+                throw new ExternalIdNotRetrievedException("The external ID of the user account could not be retrieved.");
+            }
+
+            return ownerUserAccountId;
+
+        } catch (Throwable exception) {
+            log.error(exception.getMessage());
+            exception.printStackTrace();
             throw new ExternalIdNotRetrievedException("The external ID of the user account could not be retrieved.");
         }
-
-        return ownerUserAccountId;
 
     }
 
