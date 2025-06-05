@@ -1,6 +1,7 @@
 package com.swiftling.controller;
 
 import com.swiftling.dto.PhraseDTO;
+import com.swiftling.dto.PhraseResultDTO;
 import com.swiftling.dto.wrapper.ExceptionWrapper;
 import com.swiftling.dto.wrapper.ResponseWrapper;
 import com.swiftling.service.PhraseService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -234,10 +236,7 @@ public class PhraseController {
                             examples = @ExampleObject(value = SwaggerExamples.VALIDATION_EXCEPTION_RESPONSE_EXAMPLE))),
             @ApiResponse(responseCode = "403", description = "Access is denied",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
-                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE))),
-            @ApiResponse(responseCode = "503", description = "The external ID of the user account could not be retrieved.",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
-                            examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE)))})
     public ResponseEntity<ResponseWrapper> update(@RequestParam(value = "phrase-id", required = true) UUID externalPhraseId, @Valid @RequestBody PhraseDTO phraseDTO) {
 
         PhraseDTO updatedPhrase = phraseService.update(externalPhraseId, phraseDTO);
@@ -247,6 +246,36 @@ public class PhraseController {
                 .success(true)
                 .message("The phrase has been updated successfully.")
                 .data(updatedPhrase)
+                .build());
+
+    }
+
+    @PutMapping("/quiz-result")
+    @Operation(summary = "Update the statuses of the phrases answered in quiz.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class),
+                            examples = @ExampleObject(value = SwaggerExamples.UPDATE_PHRASE_STATUSES_REQUEST_EXAMPLE))))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The statuses of the phrases have been updated successfully.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_STATUS_UPDATE_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "409", description = "The given phrase already exists: demo phrase",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_NOT_FOUND_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "400", description = "Invalid Input(s)",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.VALIDATION_EXCEPTION_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "403", description = "Access is denied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE)))})
+    ResponseEntity<ResponseWrapper> changePhraseStatuses(@RequestBody Map<UUID, PhraseResultDTO> resultForEachPhrase) {
+
+        phraseService.updateStatuses(resultForEachPhrase);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .statusCode(HttpStatus.OK)
+                .success(true)
+                .message("The statuses of the phrases have been updated successfully.")
                 .build());
 
     }

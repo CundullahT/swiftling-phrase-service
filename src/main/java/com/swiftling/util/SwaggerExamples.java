@@ -28,6 +28,17 @@ public class SwaggerExamples {
             "  \"notes\": \"Informal French greeting.\"\n" +
             "}";
 
+    public static final String UPDATE_PHRASE_STATUSES_REQUEST_EXAMPLE = "{\n" +
+            "  \"550e8400-e29b-41d4-a716-446655440000\": {\n" +
+            "    \"consecutiveCorrectAmount\": 10,\n" +
+            "    \"answeredWrongOrTimedOutAtLeastOnce\": false\n" +
+            "  },\n" +
+            "  \"550e8400-e29b-41d4-a716-446655440001\": {\n" +
+            "    \"consecutiveCorrectAmount\": 7,\n" +
+            "    \"answeredWrongOrTimedOutAtLeastOnce\": true\n" +
+            "  }\n" +
+            "}";
+
     public static final String PHRASE_CREATE_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +
             "  \"statusCode\": \"CREATED\",\n" +
@@ -42,6 +53,7 @@ public class SwaggerExamples {
             "      \"greeting\",\n" +
             "      \"basic\"\n" +
             "    ],\n" +
+            "    \"status\": \"IN_PROGRESS\",\n" +
             "    \"notes\": \"Common polite greeting in French.\"\n" +
             "  }\n" +
             "}";
@@ -60,10 +72,16 @@ public class SwaggerExamples {
             "      \"greeting\",\n" +
             "      \"informal\"\n" +
             "    ],\n" +
+            "    \"status\": \"LEARNED\",\n" +
             "    \"notes\": \"Informal French greeting.\"\n" +
             "  }\n" +
             "}";
 
+    public static final String PHRASE_STATUS_UPDATE_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": true,\n" +
+            "  \"statusCode\": \"OK\",\n" +
+            "  \"message\": \"The statuses of the phrases have been updated successfully.\"\n" +
+            "}";
 
     public static final String PHRASE_GET_ALL_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +
@@ -80,6 +98,7 @@ public class SwaggerExamples {
             "        \"greeting\",\n" +
             "        \"basic\"\n" +
             "      ],\n" +
+            "      \"status\": \"IN_PROGRESS\",\n" +
             "      \"notes\": \"Common French greeting.\"\n" +
             "    },\n" +
             "    {\n" +
@@ -91,6 +110,7 @@ public class SwaggerExamples {
             "      \"phraseTags\": [\n" +
             "        \"greeting\"\n" +
             "      ],\n" +
+            "      \"status\": \"LEARNED\",\n" +
             "      \"notes\": \"Used in the morning hours.\"\n" +
             "    }\n" +
             "  ]\n" +
@@ -111,6 +131,7 @@ public class SwaggerExamples {
             "        \"greeting\",\n" +
             "        \"basic\"\n" +
             "      ],\n" +
+            "      \"status\": \"IN_PROGRESS\",\n" +
             "      \"notes\": \"Common French greeting.\"\n" +
             "    },\n" +
             "    {\n" +
@@ -122,6 +143,7 @@ public class SwaggerExamples {
             "      \"phraseTags\": [\n" +
             "        \"greeting\"\n" +
             "      ],\n" +
+            "      \"status\": \"LEARNED\",\n" +
             "      \"notes\": \"Used in the morning hours.\"\n" +
             "    },\n" +
             "    {\n" +
@@ -133,6 +155,7 @@ public class SwaggerExamples {
             "      \"phraseTags\": [\n" +
             "        \"gratitude\"\n" +
             "      ],\n" +
+            "      \"status\": \"IN_PROGRESS\",\n" +
             "      \"notes\": \"Expressing thanks.\"\n" +
             "    },\n" +
             "    {\n" +
@@ -145,6 +168,7 @@ public class SwaggerExamples {
             "        \"greeting\",\n" +
             "        \"farewell\"\n" +
             "      ],\n" +
+            "      \"status\": \"LEARNED\",\n" +
             "      \"notes\": \"Used both for hello and goodbye.\"\n" +
             "    },\n" +
             "    {\n" +
@@ -156,6 +180,7 @@ public class SwaggerExamples {
             "      \"phraseTags\": [\n" +
             "        \"gratitude\"\n" +
             "      ],\n" +
+            "      \"status\": \"LEARNED\",\n" +
             "      \"notes\": \"Formal thanks in Japanese.\"\n" +
             "    },\n" +
             "    {\n" +
@@ -167,6 +192,7 @@ public class SwaggerExamples {
             "      \"phraseTags\": [\n" +
             "        \"greeting\"\n" +
             "      ],\n" +
+            "      \"status\": \"IN_PROGRESS\",\n" +
             "      \"notes\": \"Common greeting in Portuguese.\"\n" +
             "    },\n" +
             "    {\n" +
@@ -178,6 +204,7 @@ public class SwaggerExamples {
             "      \"phraseTags\": [\n" +
             "        \"greeting\"\n" +
             "      ],\n" +
+            "      \"status\": \"IN_PROGRESS\",\n" +
             "      \"notes\": \"Dutch greeting.\"\n" +
             "    },\n" +
             "    {\n" +
@@ -189,6 +216,7 @@ public class SwaggerExamples {
             "      \"phraseTags\": [\n" +
             "        \"greeting\"\n" +
             "      ],\n" +
+            "      \"status\": \"LEARNED\",\n" +
             "      \"notes\": \"Common Arabic greeting.\"\n" +
             "    },\n" +
             "    {\n" +
@@ -200,6 +228,7 @@ public class SwaggerExamples {
             "      \"phraseTags\": [\n" +
             "        \"greeting\"\n" +
             "      ],\n" +
+            "      \"status\": \"LEARNED\",\n" +
             "      \"notes\": \"Informal Russian greeting.\"\n" +
             "    },\n" +
             "    {\n" +
@@ -212,6 +241,7 @@ public class SwaggerExamples {
             "        \"greeting\",\n" +
             "        \"formal\"\n" +
             "      ],\n" +
+            "      \"status\": \"LEARNED\",\n" +
             "      \"notes\": \"Traditional Indian greeting.\"\n" +
             "    }\n" +
             "  ]\n" +
@@ -232,6 +262,7 @@ public class SwaggerExamples {
             "       \"greeting\",\n" +
             "       \"basic\"\n" +
             "     ],\n" +
+            "     \"status\": \"LEARNED\",\n" +
             "     \"notes\": \"Common French greeting.\"\n" +
             "  }\n" +
             "}";

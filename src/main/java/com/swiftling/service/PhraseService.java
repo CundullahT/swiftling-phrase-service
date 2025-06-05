@@ -1,9 +1,10 @@
 package com.swiftling.service;
 
 import com.swiftling.dto.PhraseDTO;
-import jakarta.validation.Valid;
+import com.swiftling.dto.PhraseResultDTO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface PhraseService {
@@ -22,7 +23,9 @@ public interface PhraseService {
 
     List<String> getTags();
 
-    PhraseDTO update(UUID externalPhraseId, @Valid PhraseDTO phraseDTO);
+    PhraseDTO update(UUID externalPhraseId, PhraseDTO phraseDTO);
+
+    void updateStatuses(Map<UUID, PhraseResultDTO> resultForEachPhrase);
 
     void delete(UUID externalPhraseId);
 

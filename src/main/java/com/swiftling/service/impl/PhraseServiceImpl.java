@@ -4,6 +4,7 @@ import com.google.cloud.texttospeech.v1.*;
 import com.google.protobuf.ByteString;
 import com.swiftling.client.UserAccountClient;
 import com.swiftling.dto.PhraseDTO;
+import com.swiftling.dto.PhraseResultDTO;
 import com.swiftling.dto.UserAccountResponseDTO;
 import com.swiftling.entity.Phrase;
 import com.swiftling.entity.PhraseTag;
@@ -190,6 +191,34 @@ public class PhraseServiceImpl implements PhraseService {
         setPhraseDTOTags(updatedPhrase, phraseToReturn);
 
         return phraseToReturn;
+
+    }
+
+    @Override
+    public void updateStatuses(Map<UUID, PhraseResultDTO> resultForEachPhrase) {
+
+        UUID ownerUserAccountId = getOwnerUserAccountId();
+
+        resultForEachPhrase.forEach((externalPhraseId, phraseResultDTO) -> {
+
+            Phrase foundPhrase = phraseRepository.findByExternalPhraseIdAndOwnerUserAccountId(externalPhraseId, ownerUserAccountId)
+                    .orElseThrow(() -> new PhraseNotFoundException("The phrase does not exist: " + externalPhraseId));
+
+            if (phraseResultDTO.getAnsweredWrongOrTimedOutAtLeastOnce()) {
+                foundPhrase.setConsecutiveCorrectAnswerAmount(phraseResultDTO.getConsecutiveCorrectAmount());
+            } else {
+                foundPhrase.setConsecutiveCorrectAnswerAmount(foundPhrase.getConsecutiveCorrectAnswerAmount() + phraseResultDTO.getConsecutiveCorrectAmount());
+            }
+
+            if (foundPhrase.getConsecutiveCorrectAnswerAmount() > 10) {
+                foundPhrase.setStatus(Status.LEARNED);
+            } else {
+                foundPhrase.setStatus(Status.IN_PROGRESS);
+            }
+
+            phraseRepository.save(foundPhrase);
+
+        });
 
     }
 
