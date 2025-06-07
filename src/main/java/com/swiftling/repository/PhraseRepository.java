@@ -1,11 +1,13 @@
 package com.swiftling.repository;
 
 import com.swiftling.entity.Phrase;
+import com.swiftling.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,7 +27,7 @@ public interface PhraseRepository extends JpaRepository<Phrase, Long> {
                    :language IS NULL OR original_language = :language OR meaning_language = :language
              )
             """, nativeQuery = true)
-    List<Phrase> findAllByOwnerUserAccountIdAndStatusAndLanguage(@Param("ownerUserAccountId") UUID ownerUserAccountId,
+    List<Phrase> findAllByOwnerUserAccountIdAndOrStatusAndOrLanguage(@Param("ownerUserAccountId") UUID ownerUserAccountId,
                                                                  @Param("status") String status,
                                                                  @Param("language") String language);
 
@@ -39,5 +41,13 @@ public interface PhraseRepository extends JpaRepository<Phrase, Long> {
             ) AS combined_languages
             """, nativeQuery = true)
     List<String> findAllDistinctLanguages();
+
+    Integer countAllByOwnerUserAccountIdAndStatus(UUID ownerUserAccountId, Status status);
+
+    Integer countAllByOwnerUserAccountId(UUID ownerUserAccountId);
+
+    Integer countAllByOwnerUserAccountIdAndStatusAndInsertDateTimeAfter(UUID ownerUserAccountId, Status status, LocalDateTime insertDateTime);
+
+    Integer countAllByOwnerUserAccountIdAndInsertDateTimeAfter(UUID ownerUserAccountId, LocalDateTime insertDateTime);
 
 }

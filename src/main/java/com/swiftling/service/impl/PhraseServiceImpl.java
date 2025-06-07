@@ -5,6 +5,7 @@ import com.google.protobuf.ByteString;
 import com.swiftling.client.UserAccountClient;
 import com.swiftling.dto.PhraseDTO;
 import com.swiftling.dto.PhraseResultDTO;
+import com.swiftling.dto.ProgressDTO;
 import com.swiftling.dto.UserAccountResponseDTO;
 import com.swiftling.entity.Phrase;
 import com.swiftling.entity.PhraseTag;
@@ -27,7 +28,11 @@ import org.springframework.stereotype.Service;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -81,7 +86,7 @@ public class PhraseServiceImpl implements PhraseService {
     @Override
     public List<PhraseDTO> getPhrases(String status, String language) {
 
-        return phraseRepository.findAllByOwnerUserAccountIdAndStatusAndLanguage(getOwnerUserAccountId(), status, language)
+        return phraseRepository.findAllByOwnerUserAccountIdAndOrStatusAndOrLanguage(getOwnerUserAccountId(), status, language)
                 .stream().map(phrase -> {
 
                     PhraseDTO phraseDTO = mapperUtil.convert(phrase, new PhraseDTO());
@@ -303,6 +308,75 @@ public class PhraseServiceImpl implements PhraseService {
             }
 
         }
+
+    }
+
+    @Override
+    public Map<String, ProgressDTO> getProgress() {
+
+        Map<String, ProgressDTO> progressMap = new HashMap<>();
+
+        getTotalProgress(progressMap);
+        getMonthlyProgress(progressMap);
+        getWeeklyProgress(progressMap);
+        getDailyProgress(progressMap);
+
+        return progressMap;
+
+    }
+
+    private void getTotalProgress(Map<String, ProgressDTO> progressMap) {
+
+        Integer totalLearnedPhrasesAmount = phraseRepository.countAllByOwnerUserAccountIdAndStatus(getOwnerUserAccountId(), Status.LEARNED);
+        Integer totalAddedPhrasesAmount = phraseRepository.countAllByOwnerUserAccountId(getOwnerUserAccountId());
+
+        ProgressDTO totalProgress = new ProgressDTO(totalLearnedPhrasesAmount, totalAddedPhrasesAmount);
+
+        progressMap.put("total-progress", totalProgress);
+
+    }
+
+    private void getMonthlyProgress(Map<String, ProgressDTO> progressMap) {
+
+        LocalDateTime startOfMonth = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+
+        Integer monthlyLearnedPhrasesAmount = phraseRepository.countAllByOwnerUserAccountIdAndStatusAndInsertDateTimeAfter(getOwnerUserAccountId(), Status.LEARNED, startOfMonth);
+        Integer monthlyAddedPhrasesAmount = phraseRepository.countAllByOwnerUserAccountIdAndInsertDateTimeAfter(getOwnerUserAccountId(), startOfMonth);
+
+        ProgressDTO monthlyProgress = new ProgressDTO(monthlyLearnedPhrasesAmount, monthlyAddedPhrasesAmount);
+
+        progressMap.put("monthly-progress", monthlyProgress);
+
+    }
+
+    private void getWeeklyProgress(Map<String, ProgressDTO> progressMap) {
+
+        LocalDate today = LocalDate.now();
+
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        DayOfWeek firstDayOfWeek = weekFields.getFirstDayOfWeek();
+
+        LocalDateTime startOfWeek = today.with(TemporalAdjusters.previousOrSame(firstDayOfWeek)).atStartOfDay();
+
+        Integer weeklyLearnedPhrasesAmount = phraseRepository.countAllByOwnerUserAccountIdAndStatusAndInsertDateTimeAfter(getOwnerUserAccountId(), Status.LEARNED, startOfWeek);
+        Integer weeklyAddedPhrasesAmount = phraseRepository.countAllByOwnerUserAccountIdAndInsertDateTimeAfter(getOwnerUserAccountId(), startOfWeek);
+
+        ProgressDTO weeklyProgress = new ProgressDTO(weeklyLearnedPhrasesAmount, weeklyAddedPhrasesAmount);
+
+        progressMap.put("weekly-progress", weeklyProgress);
+
+    }
+
+    private void getDailyProgress(Map<String, ProgressDTO> progressMap) {
+
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+
+        Integer dailyLearnedPhrasesAmount = phraseRepository.countAllByOwnerUserAccountIdAndStatusAndInsertDateTimeAfter(getOwnerUserAccountId(), Status.LEARNED, startOfDay);
+        Integer dailyAddedPhrasesAmount = phraseRepository.countAllByOwnerUserAccountIdAndInsertDateTimeAfter(getOwnerUserAccountId(), startOfDay);
+
+        ProgressDTO dailyProgress = new ProgressDTO(dailyLearnedPhrasesAmount, dailyAddedPhrasesAmount);
+
+        progressMap.put("daily-progress", dailyProgress);
 
     }
 

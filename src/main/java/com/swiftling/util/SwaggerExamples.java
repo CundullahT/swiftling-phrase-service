@@ -417,7 +417,31 @@ public class SwaggerExamples {
             "    \"pronoun\"\n" +
             "  ]\n" +
             "}";
-    
+
+    public static final String PROGRESS_GET_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": true,\n" +
+            "  \"statusCode\": \"OK\",\n" +
+            "  \"message\": \"The progress has been retrieved successfully.\",\n" +
+            "  \"data\": {\n" +
+            "    \"total-progress\": {\n" +
+            "      \"learned\": 120,\n" +
+            "      \"added\": 150\n" +
+            "    },\n" +
+            "    \"monthly-progress\": {\n" +
+            "      \"learned\": 30,\n" +
+            "      \"added\": 40\n" +
+            "    },\n" +
+            "    \"weekly-progress\": {\n" +
+            "      \"learned\": 10,\n" +
+            "      \"added\": 15\n" +
+            "    },\n" +
+            "    \"daily-progress\": {\n" +
+            "      \"learned\": 2,\n" +
+            "      \"added\": 3\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+
     public static final String ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": false,\n" +
             "  \"message\": \"Access is denied\",\n" +

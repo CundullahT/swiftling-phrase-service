@@ -2,6 +2,7 @@ package com.swiftling.controller;
 
 import com.swiftling.dto.PhraseDTO;
 import com.swiftling.dto.PhraseResultDTO;
+import com.swiftling.dto.ProgressDTO;
 import com.swiftling.dto.wrapper.ExceptionWrapper;
 import com.swiftling.dto.wrapper.ResponseWrapper;
 import com.swiftling.service.PhraseService;
@@ -215,6 +216,31 @@ public class PhraseController {
                 .success(true)
                 .message("The tags have been retrieved successfully.")
                 .data(tags)
+                .build());
+
+    }
+
+    @GetMapping("/progress")
+    @Operation(summary = "Get the progress of the logged in user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The progress has been retrieved successfully.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PROGRESS_GET_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "403", description = "Access is denied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "503", description = "The external ID of the user account could not be retrieved.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
+    public ResponseEntity<ResponseWrapper> getProgress() {
+
+        Map<String, ProgressDTO> progress = phraseService.getProgress();
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .statusCode(HttpStatus.OK)
+                .success(true)
+                .message("The progress has been retrieved successfully.")
+                .data(progress)
                 .build());
 
     }

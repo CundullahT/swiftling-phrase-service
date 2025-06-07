@@ -2,6 +2,7 @@ package com.swiftling.service;
 
 import com.swiftling.dto.PhraseDTO;
 import com.swiftling.dto.PhraseResultDTO;
+import com.swiftling.dto.ProgressDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -32,5 +33,7 @@ public interface PhraseService {
     void originalPhraseSynthesizeSpeech(UUID externalPhraseId, String outputFileName) throws Exception;
 
     void meaningPhraseSynthesizeSpeech(UUID externalPhraseId, String outputFileName) throws Exception;
+
+    Map<String, ProgressDTO> getProgress();
 
 }
