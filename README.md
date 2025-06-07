@@ -18,19 +18,20 @@ Ensure the following dependencies and configurations are installed and added:
 ## Environment Variables
 The following environment variables must be set for the application to function properly:
 
-| Variable Name                     | Description                                                                                                  |
-|-----------------------------------|--------------------------------------------------------------------------------------------------------------|
-| `KEYCLOAK_CLIENT_SECRET`          | The client secret for the configured Keycloak client (retrieve from Keycloak's client credentials tab).      |
-| `KEYCLOAK_SERVICE`                | Base URL of the Keycloak server (e.g., `http://localhost:8080`).                                             |
-| `LOG_TRACE_SERVICE`               | Base URL of the Zipkin server (e.g., `http://localhost:9411`).                                               |
-| `SWIFTLING_CONFIG_SERVICE`        | Base URL of the Spring Cloud Config Server (e.g., `http://localhost:8888`).                                  |
-| `SWIFTLING_DISCOVERY_SERVICE`     | Base URL of the Eureka server (e.g., `http://localhost:8761`).                                               |
-| `SWIFTLING_PHRASE_DB_URL`         | JDBC URL for the Phrase Service database (e.g., `jdbc:postgresql://localhost:5432/swiftling_phrase_db`).     |
-| `SWIFTLING_PHRASE_DB_USERNAME`    | Database username for the Phrase Service database (set your own username).                                   |
-| `SWIFTLING_PHRASE_DB_PASSWORD`    | Database password for the Phrase Service database (set your own password).                                   |
-| `SWIFTLING_PROFILE`               | Active Spring profile (e.g., `local`, `dev`, `prod`).                                                        |
-| `SWIFTLING_HOSTNAME`              | Hostname (if available, if none `demo` can be used).                                                         |
-| `GOOGLE_APPLICATION_CREDENTIALS`  | The path/location of the Google Cloud Service Account API Key file (e.g., `/Users/user/gc_key/my_key.json`). |
+| Variable Name                    | Description                                                                                                  |
+|----------------------------------|--------------------------------------------------------------------------------------------------------------|
+| `KEYCLOAK_CLIENT_SECRET`         | The client secret for the configured Keycloak client (retrieve from Keycloak's client credentials tab).      |
+| `KEYCLOAK_SERVICE`               | Base URL of the Keycloak server (e.g., `http://localhost:8080`).                                             |
+| `LOG_TRACE_SERVICE`              | Base URL of the Zipkin server (e.g., `http://localhost:9411`).                                               |
+| `SWIFTLING_CONFIG_SERVICE`       | Base URL of the Spring Cloud Config Server (e.g., `http://localhost:8888`).                                  |
+| `SWIFTLING_DISCOVERY_SERVICE`    | Base URL of the Eureka server (e.g., `http://localhost:8761`).                                               |
+| `SWIFTLING_PHRASE_DB_URL`        | JDBC URL for the Phrase Service database (e.g., `jdbc:postgresql://localhost:5432/swiftling_phrase_db`).     |
+| `SWIFTLING_PHRASE_DB_USERNAME`   | Database username for the Phrase Service database (set your own username).                                   |
+| `SWIFTLING_PHRASE_DB_PASSWORD`   | Database password for the Phrase Service database (set your own password).                                   |
+| `SWIFTLING_PROFILE`              | Active Spring profile (e.g., `local`, `dev`, `prod`).                                                        |
+| `SWIFTLING_HOSTNAME`             | Hostname (if available, if none `demo` can be used).                                                         |
+| `GOOGLE_APPLICATION_CREDENTIALS` | The path/location of the Google Cloud Service Account API Key file (e.g., `/Users/user/gc_key/my_key.json`). |
+| `ENV`                            | The environment in which the application is running (e.g., `local`, `dev`, `prod`).                          |
 
 ## Running the Application
 1. Clone the repository:
@@ -51,6 +52,7 @@ The following environment variables must be set for the application to function 
    export SWIFTLING_PROFILE=dev
    export SWIFTLING_HOSTNAME=demo
    export GOOGLE_APPLICATION_CREDENTIALS=your_google_cloud_service_account_api_key_path
+   export ENV=dev
    ```
    For Windows (Command Prompt):
    ```cmd
@@ -65,6 +67,7 @@ The following environment variables must be set for the application to function 
    set SWIFTLING_PROFILE=dev
    set SWIFTLING_HOSTNAME=demo
    set GOOGLE_APPLICATION_CREDENTIALS=your_google_cloud_service_account_api_key_path
+   set ENV=dev
    ```
 3. Build the project using Maven:
    ```sh
