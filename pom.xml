@@ -24,6 +24,7 @@
         <resilience4j.version>3.2.1</resilience4j.version>
         <modelmapper.version>3.2.2</modelmapper.version>
         <google-cloud.version>2.0.2</google-cloud.version>
+        <spring-kafka.version>3.2.2</spring-kafka.version>
     </properties>
 
     <dependencies>
@@ -131,6 +132,11 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>${spring-kafka.version}</version>
         </dependency>
     </dependencies>
 
