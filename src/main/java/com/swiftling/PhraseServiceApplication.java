@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -16,6 +17,7 @@ import java.util.Map;
 @Slf4j
 @EnableFeignClients
 @EnableDiscoveryClient
+@EnableScheduling
 @SpringBootApplication
 public class PhraseServiceApplication {
 
