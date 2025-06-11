@@ -36,4 +36,6 @@ public interface PhraseService {
 
     Map<String, ProgressDTO> getProgress();
 
+    Map<UUID, Map<String, ProgressDTO>> getAllUsersProgress();
+
 }

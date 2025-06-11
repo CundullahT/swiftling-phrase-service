@@ -17,6 +17,7 @@ import com.swiftling.exception.ExternalIdNotRetrievedException;
 import com.swiftling.exception.PhraseAlreadyExistsException;
 import com.swiftling.exception.PhraseCanNotBeDeletedException;
 import com.swiftling.exception.PhraseNotFoundException;
+import com.swiftling.repository.GroupedProgressView;
 import com.swiftling.repository.PhraseRepository;
 import com.swiftling.repository.TagRepository;
 import com.swiftling.service.PhraseService;
@@ -325,6 +326,26 @@ public class PhraseServiceImpl implements PhraseService {
 
     }
 
+    @Override
+    public Map<UUID, Map<String, ProgressDTO>> getAllUsersProgress() {
+
+        Map<UUID, Map<String, ProgressDTO>> allProgress = new HashMap<>();
+
+        populateProgressMap(allProgress, phraseRepository.getTotalProgressForAllUsers(), "total-progress");
+
+        LocalDateTime monthStart = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        populateProgressMap(allProgress, phraseRepository.getProgressSince(monthStart), "monthly-progress");
+
+        DayOfWeek firstDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
+        LocalDateTime weekStart = LocalDate.now().with(TemporalAdjusters.previousOrSame(firstDayOfWeek)).atStartOfDay();
+        populateProgressMap(allProgress, phraseRepository.getProgressSince(weekStart), "weekly-progress");
+
+        LocalDateTime todayStart = LocalDate.now().atStartOfDay();
+        populateProgressMap(allProgress, phraseRepository.getProgressSince(todayStart), "daily-progress");
+
+        return allProgress;
+    }
+
     private void getTotalProgress(Map<String, ProgressDTO> progressMap) {
 
         Integer totalLearnedPhrasesAmount = phraseRepository.countAllByOwnerUserAccountIdAndStatus(getOwnerUserAccountId(), Status.LEARNED);
@@ -402,6 +423,17 @@ public class PhraseServiceImpl implements PhraseService {
             throw new ExternalIdNotRetrievedException("The external ID of the user account could not be retrieved.");
         }
 
+    }
+
+    private void populateProgressMap(Map<UUID, Map<String, ProgressDTO>> allProgress,
+                                     List<GroupedProgressView> data,
+                                     String key) {
+
+        for (GroupedProgressView view : data) {
+            UUID userId = view.getOwnerUserAccountId();
+            allProgress.computeIfAbsent(userId, k -> new HashMap<>())
+                    .put(key, new ProgressDTO(view.getLearned(), view.getAdded()));
+        }
     }
 
     private void setPhraseTags(Phrase phrase, PhraseDTO phraseDTO) {

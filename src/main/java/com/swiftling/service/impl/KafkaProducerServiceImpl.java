@@ -1,21 +1,18 @@
 package com.swiftling.service.impl;
 
-import com.swiftling.client.UserAccountClient;
-import com.swiftling.dto.UserAccountResponseDTO;
+import com.swiftling.dto.ProgressDTO;
 import com.swiftling.dto.UserProgressMessageDTO;
-import com.swiftling.exception.ExternalIdNotRetrievedException;
 import com.swiftling.service.KafkaProducerService;
 import com.swiftling.service.PhraseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -25,15 +22,13 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private final PhraseService phraseService;
-    private final UserAccountClient userAccountClient;
 
     @Value("${kafka.topic.user-progress}")
     private String userProgressTopic;
 
-    public KafkaProducerServiceImpl(KafkaTemplate<String, Object> kafkaTemplate, PhraseService phraseService, UserAccountClient userAccountClient) {
+    public KafkaProducerServiceImpl(KafkaTemplate<String, Object> kafkaTemplate, PhraseService phraseService) {
         this.kafkaTemplate = kafkaTemplate;
         this.phraseService = phraseService;
-        this.userAccountClient = userAccountClient;
     }
 
     @Override
@@ -53,54 +48,29 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
      * - every day of the week
      */
     @Scheduled(cron = "0 0 9 * * ?")
-    public void sendUserProgressMessage() {
+    public void sendAllUsersProgressMessages() {
 
-        log.info("Executing scheduled task to send daily user progress message at 9 AM");
+        log.info("Executing scheduled task to send daily progress messages for all users at 9 AM");
 
         try {
 
-            // Get the user account ID
-            UUID userAccountId = getUserAccountId();
+            Map<UUID, Map<String, ProgressDTO>> allUserProgress = phraseService.getAllUsersProgress();
 
-            // Get the user's progress
-            var progress = phraseService.getProgress();
+            allUserProgress.forEach((userId, progressMap) -> {
+                UserProgressMessageDTO message = UserProgressMessageDTO.builder()
+                        .userAccountId(userId)
+                        .progress(progressMap)
+                        .timestamp(LocalDateTime.now())
+                        .build();
 
-            // Create the message DTO
-            UserProgressMessageDTO messageDTO = UserProgressMessageDTO.builder()
-                    .userAccountId(userAccountId)
-                    .progress(progress)
-                    .timestamp(LocalDateTime.now())
-                    .build();
+                sendUserProgressMessage(message);
 
-            // Send the message
-            sendUserProgressMessage(messageDTO);
+            });
 
-            log.info("Successfully sent user progress message");
+            log.info("Successfully sent progress messages for {} users", allUserProgress.size());
 
         } catch (Exception e) {
-            log.error("Error sending user progress message", e);
-        }
-    }
-
-    private UUID getUserAccountId() {
-
-        try {
-
-            UUID ownerUserAccountId;
-
-            ResponseEntity<UserAccountResponseDTO> response = userAccountClient.getUserAccountExternalId();
-
-            if (Objects.requireNonNull(response.getBody()).isSuccess() && Objects.requireNonNull(response.getBody()).getData() != null) {
-                ownerUserAccountId = (UUID) response.getBody().getData();
-            } else {
-                throw new ExternalIdNotRetrievedException("The external ID of the user account could not be retrieved.");
-            }
-
-            return ownerUserAccountId;
-
-        } catch (Throwable exception) {
-            log.error("Error getting user account ID: {}", exception.getMessage(), exception);
-            throw new ExternalIdNotRetrievedException("The external ID of the user account could not be retrieved.");
+            log.error("Error sending progress messages to Kafka", e);
         }
 
     }

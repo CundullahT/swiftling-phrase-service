@@ -50,4 +50,17 @@ public interface PhraseRepository extends JpaRepository<Phrase, Long> {
 
     Integer countAllByOwnerUserAccountIdAndInsertDateTimeAfter(UUID ownerUserAccountId, LocalDateTime insertDateTime);
 
+    @Query("SELECT p.ownerUserAccountId AS ownerUserAccountId, " +
+            "SUM(CASE WHEN p.status = 'LEARNED' THEN 1 ELSE 0 END) AS learned, " +
+            "COUNT(p) AS added " +
+            "FROM Phrase p GROUP BY p.ownerUserAccountId")
+    List<GroupedProgressView> getTotalProgressForAllUsers();
+
+    @Query("SELECT p.ownerUserAccountId AS ownerUserAccountId, " +
+            "SUM(CASE WHEN p.status = 'LEARNED' AND p.insertDateTime >= :startDate THEN 1 ELSE 0 END) AS learned, " +
+            "SUM(CASE WHEN p.insertDateTime >= :startDate THEN 1 ELSE 0 END) AS added " +
+            "FROM Phrase p WHERE p.insertDateTime >= :startDate " +
+            "GROUP BY p.ownerUserAccountId")
+    List<GroupedProgressView> getProgressSince(@Param("startDate") LocalDateTime startDate);
+
 }
