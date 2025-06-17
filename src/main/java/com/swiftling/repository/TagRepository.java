@@ -15,16 +15,17 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     Optional<Tag> findByTagNameEqualsIgnoreCase(String tagName);
 
-    @Query("""
-            SELECT DISTINCT t
-              FROM Tag t
-              JOIN t.phraseTags pt
-              JOIN pt.phrase p
-             WHERE p.ownerUserAccountId = :ownerId
-             AND LOWER(t.tagName) = LOWER(:tagName)
-            """)
-    Optional<Tag> findByOwnerUserAccountIdAndTagName(@Param("ownerId") UUID ownerId, @Param("tagName") String tagName);
+//    @Query("""
+//            SELECT DISTINCT t
+//              FROM Tag t
+//              JOIN t.phraseTags pt
+//              JOIN pt.phrase p
+//             WHERE p.ownerUserAccountId = :ownerId
+//             AND LOWER(t.tagName) = LOWER(:tagName)
+//            """)
+//    Optional<Tag> findByOwnerUserAccountIdAndTagName(@Param("ownerId") UUID ownerId, @Param("tagName") String tagName);
 
+    Optional<Tag> findByOwnerUserAccountIdAndTagName(UUID ownerUserAccountId, String tagName);
 
     @Query("""
         SELECT DISTINCT t

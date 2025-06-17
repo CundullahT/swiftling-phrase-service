@@ -193,22 +193,23 @@ public class PhraseServiceImpl implements PhraseService {
     @Override
     public PhraseDTO update(UUID externalPhraseId, PhraseDTO phraseDTO) {
 
-        Phrase foundPhrase = phraseRepository.findByExternalPhraseIdAndOwnerUserAccountId(externalPhraseId, getOwnerUserAccountId())
+        Phrase foundPhraseToUpdate = phraseRepository.findByExternalPhraseIdAndOwnerUserAccountId(externalPhraseId, getOwnerUserAccountId())
                 .orElseThrow(() -> new PhraseNotFoundException("The phrase does not exist: " + externalPhraseId));
 
-        Phrase phraseToUpdate = mapperUtil.convert(phraseDTO, new Phrase());
+//        foundPhraseToUpdate.setExternalPhraseId(foundPhraseToUpdate.getExternalPhraseId());
+        foundPhraseToUpdate.setConsecutiveCorrectAnswerAmount(0);
+        foundPhraseToUpdate.setOriginalPhrase(phraseDTO.getOriginalPhrase());
+        foundPhraseToUpdate.setOriginalLanguage(Language.findByCode(phraseDTO.getOriginalLanguage().toLowerCase()));
+        foundPhraseToUpdate.setMeaning(phraseDTO.getMeaning());
+        foundPhraseToUpdate.setMeaningLanguage(Language.findByCode(phraseDTO.getMeaningLanguage().toLowerCase()));
+        foundPhraseToUpdate.setStatus(Status.IN_PROGRESS);
+        foundPhraseToUpdate.setNotes(phraseDTO.getNotes());
+//        foundPhraseToUpdate.setOwnerUserAccountId(foundPhraseToUpdate.getOwnerUserAccountId());
+        foundPhraseToUpdate.setInsertDateTime(LocalDateTime.now());
 
-        phraseToUpdate.setExternalPhraseId(foundPhrase.getExternalPhraseId());
-        phraseToUpdate.setConsecutiveCorrectAnswerAmount(0);
-        phraseToUpdate.setOriginalLanguage(Language.findByCode(phraseDTO.getOriginalLanguage().toLowerCase()));
-        phraseToUpdate.setMeaningLanguage(Language.findByCode(phraseDTO.getMeaningLanguage().toLowerCase()));
-        phraseToUpdate.setStatus(Status.IN_PROGRESS);
-        phraseToUpdate.setOwnerUserAccountId(foundPhrase.getOwnerUserAccountId());
-        phraseToUpdate.setInsertDateTime(LocalDateTime.now());
+        setPhraseTags(foundPhraseToUpdate, phraseDTO);
 
-        setPhraseTags(phraseToUpdate, phraseDTO);
-
-        Phrase updatedPhrase = phraseRepository.save(phraseToUpdate);
+        Phrase updatedPhrase = phraseRepository.save(foundPhraseToUpdate);
 
         PhraseDTO phraseToReturn = mapperUtil.convert(updatedPhrase, new PhraseDTO());
 
@@ -456,13 +457,23 @@ public class PhraseServiceImpl implements PhraseService {
 
     private void setPhraseTags(Phrase phrase, PhraseDTO phraseDTO) {
 
+        List<PhraseTag> existingTags = new ArrayList<>(phrase.getPhraseTags());
+        for (PhraseTag pt : existingTags) {
+            phrase.removeTag(pt.getTag());
+        }
+
+        phraseRepository.flush();
+
         phrase.getPhraseTags().clear();
 
+        UUID ownerId = phrase.getOwnerUserAccountId();
+
         for (String tagName : phraseDTO.getPhraseTags()) {
-            Tag tag = tagRepository.findByOwnerUserAccountIdAndTagName(phrase.getOwnerUserAccountId(), tagName.toLowerCase())
+            Tag tag = tagRepository.findByOwnerUserAccountIdAndTagName(ownerId, tagName.toLowerCase())
                     .orElseGet(() -> {
                         Tag newTag = new Tag();
                         newTag.setTagName(tagName.toLowerCase());
+                        newTag.setOwnerUserAccountId(ownerId);
                         return tagRepository.save(newTag);
                     });
             phrase.addTag(tag);
