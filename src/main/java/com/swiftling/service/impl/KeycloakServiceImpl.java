@@ -14,20 +14,33 @@ public class KeycloakServiceImpl implements KeycloakService {
 
     @Override
     public String getAccessToken() {
-        KeycloakAuthenticationToken keycloakAuthenticationToken = getAuthentication();
-        return "Bearer " + keycloakAuthenticationToken.getAccount()
-                .getKeycloakSecurityContext().getTokenString();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication instanceof JwtAuthenticationToken jwtAuthToken) {
+            String tokenValue = jwtAuthToken.getToken().getTokenValue();
+            return "Bearer " + tokenValue;
+        }
+
+        throw new IllegalStateException("Authentication is not of type JwtAuthenticationToken");
+
     }
 
     @Override
     public String getLoggedInUserName() {
-        Authentication authentication = getAuthentication();
-        Map<String, Object> attributes = ((JwtAuthenticationToken) authentication).getTokenAttributes();
-        return (String) attributes.get("preferred_username");
-    }
 
-    private KeycloakAuthenticationToken getAuthentication() {
-        return (KeycloakAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication instanceof JwtAuthenticationToken jwtAuth) {
+            return (String) jwtAuth.getTokenAttributes().get("preferred_username");
+        }
+
+        if (authentication instanceof KeycloakAuthenticationToken keycloakAuth) {
+            return keycloakAuth.getName();
+        }
+
+        throw new IllegalStateException("Unsupported authentication type: " + (authentication != null ? authentication.getClass() : "null"));
+
     }
 
 }
