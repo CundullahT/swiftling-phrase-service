@@ -410,7 +410,7 @@ public class PhraseServiceImpl implements PhraseService {
             ResponseEntity<UserAccountResponseDTO> response = userAccountClient.getUserAccountExternalId();
 
             if (Objects.requireNonNull(response.getBody()).isSuccess() && Objects.requireNonNull(response.getBody()).getData() != null) {
-                ownerUserAccountId = (UUID) response.getBody().getData();
+                ownerUserAccountId = UUID.fromString((String) response.getBody().getData());
             } else {
                 throw new ExternalIdNotRetrievedException("The external ID of the user account could not be retrieved.");
             }
