@@ -6,13 +6,14 @@ import com.swiftling.dto.ProgressDTO;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public interface PhraseService {
 
     PhraseDTO create(PhraseDTO phraseDTO);
 
-    List<PhraseDTO> getPhrases(String status, String language);
+    List<PhraseDTO> getPhrases(String status, String languageCode);
 
     List<PhraseDTO> getLastTenPhrases();
 
@@ -22,7 +23,7 @@ public interface PhraseService {
 
     List<String> getQuizLanguages();
 
-    List<String> getTags();
+    Set<String> getTags();
 
     PhraseDTO update(UUID externalPhraseId, PhraseDTO phraseDTO);
 

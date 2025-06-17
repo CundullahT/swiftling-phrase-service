@@ -55,9 +55,10 @@ public class Phrase extends BaseEntity {
     private LocalDateTime insertDateTime;
 
     public void addTag(Tag tag) {
-        PhraseTag pt = new PhraseTag(this, tag);
-        phraseTags.add(pt);
-        tag.getPhraseTags().add(pt);
+        if (phraseTags.stream().noneMatch(pt -> pt.getTag().equals(tag))) {
+            PhraseTag pt = new PhraseTag(this, tag);
+            phraseTags.add(pt);
+        }
     }
 
     public void removeTag(Tag tag) {

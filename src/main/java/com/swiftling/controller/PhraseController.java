@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -82,9 +83,9 @@ public class PhraseController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
                             examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
     public ResponseEntity<ResponseWrapper> getPhrases(@RequestParam(value = "status", required = false) String status,
-                                                      @RequestParam(value = "lang", required = false) String language) {
+                                                      @RequestParam(value = "langCode", required = false) String languageCode) {
 
-        List<PhraseDTO> phrases = phraseService.getPhrases(status, language);
+        List<PhraseDTO> phrases = phraseService.getPhrases(status, languageCode);
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .statusCode(HttpStatus.OK)
@@ -135,7 +136,7 @@ public class PhraseController {
             @ApiResponse(responseCode = "503", description = "The external ID of the user account could not be retrieved.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
                             examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
-    public ResponseEntity<ResponseWrapper> getPhrases(@RequestParam(value = "phrase-id", required = true) UUID externalPhraseId) {
+    public ResponseEntity<ResponseWrapper> getPhraseDetails(@RequestParam(value = "phrase-id", required = true) UUID externalPhraseId) {
 
         PhraseDTO phrase = phraseService.getPhraseDetails(externalPhraseId);
 
@@ -209,7 +210,7 @@ public class PhraseController {
                             examples = @ExampleObject(value = SwaggerExamples.USER_EXTERNAL_ID_NOT_RETRIEVED_RESPONSE_EXAMPLE)))})
     public ResponseEntity<ResponseWrapper> getTags() {
 
-        List<String> tags = phraseService.getTags();
+        Set<String> tags = phraseService.getTags();
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .statusCode(HttpStatus.OK)

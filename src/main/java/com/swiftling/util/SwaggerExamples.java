@@ -6,9 +6,9 @@ public class SwaggerExamples {
 
     public static final String PHRASE_CREATE_REQUEST_EXAMPLE = "{\n" +
             "  \"originalPhrase\": \"Bonjour\",\n" +
-            "  \"originalLanguage\": \"FRENCH\",\n" +
+            "  \"originalLanguage\": \"fr\",\n" +
             "  \"meaning\": \"Hello\",\n" +
-            "  \"meaningLanguage\": \"ENGLISH\",\n" +
+            "  \"meaningLanguage\": \"en\",\n" +
             "  \"phraseTags\": [\n" +
             "    \"greeting\",\n" +
             "    \"basic\"\n" +
@@ -18,9 +18,9 @@ public class SwaggerExamples {
 
     public static final String PHRASE_UPDATE_REQUEST_EXAMPLE = "{\n" +
             "  \"originalPhrase\": \"Salut\",\n" +
-            "  \"originalLanguage\": \"FRENCH\",\n" +
+            "  \"originalLanguage\": \"fr\",\n" +
             "  \"meaning\": \"Hi\",\n" +
-            "  \"meaningLanguage\": \"ENGLISH\",\n" +
+            "  \"meaningLanguage\": \"en\",\n" +
             "  \"phraseTags\": [\n" +
             "    \"greeting\",\n" +
             "    \"informal\"\n" +

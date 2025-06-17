@@ -66,15 +66,19 @@ public class PhraseServiceImpl implements PhraseService {
 
         phraseToSave.setExternalPhraseId(UUID.randomUUID());
         phraseToSave.setConsecutiveCorrectAnswerAmount(0);
-        phraseToSave.setOriginalLanguage(Language.findByValue(phraseDTO.getOriginalLanguage()));
-        phraseToSave.setMeaningLanguage(Language.findByValue(phraseDTO.getMeaningLanguage()));
+        phraseToSave.setOriginalLanguage(Language.findByCode(phraseDTO.getOriginalLanguage().toLowerCase()));
+        phraseToSave.setMeaningLanguage(Language.findByCode(phraseDTO.getMeaningLanguage().toLowerCase()));
         phraseToSave.setStatus(Status.IN_PROGRESS);
         phraseToSave.setOwnerUserAccountId(getOwnerUserAccountId());
         phraseToSave.setInsertDateTime(LocalDateTime.now());
 
-        setPhraseTags(phraseToSave, phraseDTO);
+        phraseToSave.setPhraseTags(new ArrayList<>());
 
         Phrase savedPhrase = phraseRepository.save(phraseToSave);
+
+        setPhraseTags(savedPhrase, phraseDTO);
+
+        savedPhrase = phraseRepository.save(savedPhrase);
 
         PhraseDTO phraseToReturn = mapperUtil.convert(savedPhrase, new PhraseDTO());
 
@@ -85,7 +89,15 @@ public class PhraseServiceImpl implements PhraseService {
     }
 
     @Override
-    public List<PhraseDTO> getPhrases(String status, String language) {
+    public List<PhraseDTO> getPhrases(String status, String languageCode) {
+
+        String language;
+
+        if (languageCode != null) {
+            language = Language.findByCode(languageCode.toLowerCase()).toString();
+        } else {
+            language = null;
+        }
 
         return phraseRepository.findAllByOwnerUserAccountIdAndOrStatusAndOrLanguage(getOwnerUserAccountId(), status, language)
                 .stream().map(phrase -> {
@@ -145,24 +157,30 @@ public class PhraseServiceImpl implements PhraseService {
     @Override
     public List<String> getLanguages() {
         return Stream.of(Language.values())
-                .map(Language::getValue).toList();
+                .map(Language::getValue)
+                .sorted()
+                .toList();
     }
 
     @Override
     public List<String> getQuizLanguages() {
-        return phraseRepository.findAllDistinctLanguages();
+        return phraseRepository.findAllDistinctLanguages(getOwnerUserAccountId())
+                .stream()
+                .map(Language::getValue)
+                .sorted()
+                .toList();
     }
 
     @Override
-    public List<String> getTags() {
+    public Set<String> getTags() {
 
-        List<String> allTags = new ArrayList<>();
+        Set<String> allTags = new TreeSet<>();
 
         List<String> defaultTags = Stream.of(DefaultTag.values())
                 .map(DefaultTag::getValue).toList();
 
         List<String> savedTags = tagRepository.findAllByPhraseOwner(getOwnerUserAccountId())
-                .stream().map(Tag::getTagName)
+                .stream().map(tag -> tag.getTagName().toLowerCase())
                 .toList();
 
         allTags.addAll(defaultTags);
@@ -182,8 +200,8 @@ public class PhraseServiceImpl implements PhraseService {
 
         phraseToUpdate.setExternalPhraseId(foundPhrase.getExternalPhraseId());
         phraseToUpdate.setConsecutiveCorrectAnswerAmount(0);
-        phraseToUpdate.setOriginalLanguage(Language.findByValue(phraseDTO.getOriginalLanguage()));
-        phraseToUpdate.setMeaningLanguage(Language.findByValue(phraseDTO.getMeaningLanguage()));
+        phraseToUpdate.setOriginalLanguage(Language.findByCode(phraseDTO.getOriginalLanguage().toLowerCase()));
+        phraseToUpdate.setMeaningLanguage(Language.findByCode(phraseDTO.getMeaningLanguage().toLowerCase()));
         phraseToUpdate.setStatus(Status.IN_PROGRESS);
         phraseToUpdate.setOwnerUserAccountId(foundPhrase.getOwnerUserAccountId());
         phraseToUpdate.setInsertDateTime(LocalDateTime.now());
@@ -441,10 +459,10 @@ public class PhraseServiceImpl implements PhraseService {
         phrase.getPhraseTags().clear();
 
         for (String tagName : phraseDTO.getPhraseTags()) {
-            Tag tag = tagRepository.findByOwnerUserAccountIdAndTagName(phrase.getOwnerUserAccountId(), tagName)
+            Tag tag = tagRepository.findByOwnerUserAccountIdAndTagName(phrase.getOwnerUserAccountId(), tagName.toLowerCase())
                     .orElseGet(() -> {
                         Tag newTag = new Tag();
-                        newTag.setTagName(tagName);
+                        newTag.setTagName(tagName.toLowerCase());
                         return tagRepository.save(newTag);
                     });
             phrase.addTag(tag);
@@ -457,7 +475,7 @@ public class PhraseServiceImpl implements PhraseService {
         phraseDTO.getPhraseTags().clear();
 
         for (PhraseTag phraseTag : phrase.getPhraseTags()) {
-            phraseDTO.getPhraseTags().add(phraseTag.getTag().getTagName());
+            phraseDTO.getPhraseTags().add(phraseTag.getTag().getTagName().toLowerCase());
         }
 
     }

@@ -132,10 +132,22 @@ public enum Language {
             Stream.of(values())
                     .collect(Collectors.toMap(Language::getValue, s -> s));
 
+    private static final Map<String,Language> BY_CODE =
+            Stream.of(values())
+                    .collect(Collectors.toMap(Language::getCode, s -> s));
+
     public static Language findByValue(String value) {
         Language language = BY_VALUE.get(value);
         if (language == null) {
             throw new UnknownLanguageException("Unknown Language: " + value);
+        }
+        return language;
+    }
+
+    public static Language findByCode(String code) {
+        Language language = BY_CODE.get(code);
+        if (language == null) {
+            throw new UnknownLanguageException("Unknown Language Code: " + code);
         }
         return language;
     }

@@ -1,6 +1,7 @@
 package com.swiftling.repository;
 
 import com.swiftling.entity.Phrase;
+import com.swiftling.enums.Language;
 import com.swiftling.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -36,11 +37,13 @@ public interface PhraseRepository extends JpaRepository<Phrase, Long> {
     @Query(value = """
             SELECT DISTINCT language FROM (
              SELECT original_language AS language FROM phrases
+             WHERE owner_user_account_id = :ownerUserAccountId
              UNION
              SELECT meaning_language AS language FROM phrases
+             WHERE owner_user_account_id = :ownerUserAccountId
             ) AS combined_languages
             """, nativeQuery = true)
-    List<String> findAllDistinctLanguages();
+    List<Language> findAllDistinctLanguages(@Param("ownerUserAccountId") UUID ownerUserAccountId);
 
     Integer countAllByOwnerUserAccountIdAndStatus(UUID ownerUserAccountId, Status status);
 
