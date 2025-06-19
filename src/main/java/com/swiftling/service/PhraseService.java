@@ -31,6 +31,8 @@ public interface PhraseService {
 
     void delete(UUID externalPhraseId);
 
+    void deleteAllByUser(UUID externalOwnerUserAccountId);
+
     void originalPhraseSynthesizeSpeech(UUID externalPhraseId, String outputFileName) throws Exception;
 
     void meaningPhraseSynthesizeSpeech(UUID externalPhraseId, String outputFileName) throws Exception;

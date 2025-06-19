@@ -36,4 +36,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
         """)
     List<Tag> findAllByPhraseOwner(@Param("ownerId") UUID ownerId);
 
+    List<Tag> findAllByOwnerUserAccountId(UUID externalOwnerUserAccountId);
+
 }

@@ -48,8 +48,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionWrapper);
     }
 
-    @ExceptionHandler(PhraseNotFoundException.class)
-    public ResponseEntity<ExceptionWrapper> handlePhraseNotFoundException(Throwable exception) {
+    @ExceptionHandler({PhraseNotFoundException.class, UserNotFoundException.class})
+    public ResponseEntity<ExceptionWrapper> handleNotFoundExceptions(Throwable exception) {
         log.error(exception.getMessage());
         exception.printStackTrace();
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()

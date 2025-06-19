@@ -66,4 +66,6 @@ public interface PhraseRepository extends JpaRepository<Phrase, Long> {
             "GROUP BY p.ownerUserAccountId")
     List<GroupedProgressView> getProgressSince(@Param("startDate") LocalDateTime startDate);
 
+    List<Phrase> findAllByOwnerUserAccountId(UUID ownerUserAccountId);
+
 }

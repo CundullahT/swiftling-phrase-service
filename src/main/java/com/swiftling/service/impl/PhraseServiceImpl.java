@@ -262,6 +262,23 @@ public class PhraseServiceImpl implements PhraseService {
     }
 
     @Override
+    public void deleteAllByUser(UUID externalOwnerUserAccountId) {
+
+        try {
+
+            List<Phrase> allUserPhrases = phraseRepository.findAllByOwnerUserAccountId(externalOwnerUserAccountId);
+            phraseRepository.deleteAll(allUserPhrases);
+
+            List<Tag> allUserTags = tagRepository.findAllByOwnerUserAccountId(externalOwnerUserAccountId);
+            tagRepository.deleteAll(allUserTags);
+
+        } catch (Throwable exception) {
+            throw new PhraseCanNotBeDeletedException("The phrases can not be deleted.");
+        }
+
+    }
+
+    @Override
     public void originalPhraseSynthesizeSpeech(UUID externalPhraseId, String outputFileName) throws IOException {
 
         Phrase foundPhrase = phraseRepository.findByExternalPhraseIdAndOwnerUserAccountId(externalPhraseId, getOwnerUserAccountId())

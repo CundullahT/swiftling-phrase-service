@@ -330,6 +330,29 @@ public class PhraseController {
 
     }
 
+    @DeleteMapping("/delete-all-user-phrases")
+    @Operation(summary = "Delete all existing phrase belongs to an existing user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "The phrases have been deleted successfully."),
+            @ApiResponse(responseCode = "404", description = "The user does not exist: 550e8400-e29b-41d4-a716-446655440000",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                                    examples = @ExampleObject(value = SwaggerExamples.USER_NOT_FOUND_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "409", description = "The phrases can not be deleted.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASES_NOT_DELETED_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "403", description = "Access is denied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE)))})
+    public ResponseEntity<ResponseWrapper> deleteAllByUser(@RequestParam(value = "external-user-id", required = true) UUID externalOwnerUserAccountId) {
+
+        phraseService.deleteAllByUser(externalOwnerUserAccountId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ResponseWrapper.builder()
+                .statusCode(HttpStatus.NO_CONTENT)
+                .build());
+
+    }
+
     @PostMapping("pronunciation/original")
     @Operation(summary = "Get a pronunciation of the original phrase created by the logged in user.")
     @ApiResponses(value = {
