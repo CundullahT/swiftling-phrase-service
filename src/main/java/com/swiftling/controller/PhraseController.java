@@ -320,13 +320,11 @@ public class PhraseController {
             @ApiResponse(responseCode = "403", description = "Access is denied",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
                             examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE)))})
-    public ResponseEntity<ResponseWrapper> delete(@RequestParam(value = "phrase-id", required = true) UUID externalPhraseId) {
+    public ResponseEntity<Void> delete(@RequestParam(value = "phrase-id", required = true) UUID externalPhraseId) {
 
         phraseService.delete(externalPhraseId);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ResponseWrapper.builder()
-                .statusCode(HttpStatus.NO_CONTENT)
-                .build());
+        return ResponseEntity.noContent().build();
 
     }
 
@@ -343,13 +341,11 @@ public class PhraseController {
             @ApiResponse(responseCode = "403", description = "Access is denied",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
                             examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE)))})
-    public ResponseEntity<ResponseWrapper> deleteAllByUser(@RequestParam(value = "external-user-id", required = true) UUID externalOwnerUserAccountId) {
+    public ResponseEntity<Void> deleteAllByUser(@RequestParam(value = "external-user-id", required = true) UUID externalOwnerUserAccountId) {
 
         phraseService.deleteAllByUser(externalOwnerUserAccountId);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ResponseWrapper.builder()
-                .statusCode(HttpStatus.NO_CONTENT)
-                .build());
+        return ResponseEntity.noContent().build();
 
     }
 
