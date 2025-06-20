@@ -84,6 +84,9 @@ public class PhraseServiceImpl implements PhraseService {
 
         setPhraseDTOTags(savedPhrase, phraseToReturn);
 
+        phraseToReturn.setOriginalLanguage(savedPhrase.getOriginalLanguage().getValue());
+        phraseToReturn.setMeaningLanguage(savedPhrase.getMeaningLanguage().getValue());
+
         return phraseToReturn;
 
     }
@@ -214,6 +217,9 @@ public class PhraseServiceImpl implements PhraseService {
         PhraseDTO phraseToReturn = mapperUtil.convert(updatedPhrase, new PhraseDTO());
 
         setPhraseDTOTags(updatedPhrase, phraseToReturn);
+
+        phraseToReturn.setOriginalLanguage(updatedPhrase.getOriginalLanguage().getValue());
+        phraseToReturn.setMeaningLanguage(updatedPhrase.getMeaningLanguage().getValue());
 
         return phraseToReturn;
 
