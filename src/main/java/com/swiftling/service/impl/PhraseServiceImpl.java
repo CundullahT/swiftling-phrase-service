@@ -241,7 +241,7 @@ public class PhraseServiceImpl implements PhraseService {
                 foundPhrase.setConsecutiveCorrectAnswerAmount(foundPhrase.getConsecutiveCorrectAnswerAmount() + phraseResultDTO.getConsecutiveCorrectAmount());
             }
 
-            if (foundPhrase.getConsecutiveCorrectAnswerAmount() > 10) {
+            if (foundPhrase.getConsecutiveCorrectAnswerAmount() >= 10) {
                 foundPhrase.setStatus(Status.LEARNED);
             } else {
                 foundPhrase.setStatus(Status.IN_PROGRESS);
