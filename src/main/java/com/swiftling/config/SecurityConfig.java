@@ -52,7 +52,7 @@ public class SecurityConfig {
                     return new JwtAuthenticationToken(auth, grantedAuthorities);
 
                 })))
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
 
