@@ -71,6 +71,7 @@ public class PhraseServiceImpl implements PhraseService {
         phraseToSave.setStatus(Status.IN_PROGRESS);
         phraseToSave.setOwnerUserAccountId(getOwnerUserAccountId());
         phraseToSave.setInsertDateTime(LocalDateTime.now());
+        phraseToSave.setNotes(phraseDTO.getNotes());
 
         phraseToSave.setPhraseTags(new ArrayList<>());
 
@@ -209,6 +210,7 @@ public class PhraseServiceImpl implements PhraseService {
         foundPhraseToUpdate.setNotes(phraseDTO.getNotes());
 //        foundPhraseToUpdate.setOwnerUserAccountId(foundPhraseToUpdate.getOwnerUserAccountId());
         foundPhraseToUpdate.setInsertDateTime(LocalDateTime.now());
+        foundPhraseToUpdate.setNotes(phraseDTO.getNotes());
 
         setPhraseTags(foundPhraseToUpdate, phraseDTO);
 

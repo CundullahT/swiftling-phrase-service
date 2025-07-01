@@ -46,9 +46,9 @@ public class SwaggerExamples {
             "  \"data\": {\n" +
             "    \"externalPhraseId\": \"550e8400-e29b-41d4-a716-446655440000\",\n" +
             "    \"originalPhrase\": \"Bonjour\",\n" +
-            "    \"originalLanguage\": \"FRENCH\",\n" +
+            "    \"originalLanguage\": \"French\",\n" +
             "    \"meaning\": \"Hello\",\n" +
-            "    \"meaningLanguage\": \"ENGLISH\",\n" +
+            "    \"meaningLanguage\": \"English\",\n" +
             "    \"phraseTags\": [\n" +
             "      \"greeting\",\n" +
             "      \"basic\"\n" +
@@ -65,9 +65,9 @@ public class SwaggerExamples {
             "  \"data\": {\n" +
             "    \"externalPhraseId\": \"550e8400-e29b-41d4-a716-446655440000\",\n" +
             "    \"originalPhrase\": \"Salut\",\n" +
-            "    \"originalLanguage\": \"FRENCH\",\n" +
+            "    \"originalLanguage\": \"French\",\n" +
             "    \"meaning\": \"Hi\",\n" +
-            "    \"meaningLanguage\": \"ENGLISH\",\n" +
+            "    \"meaningLanguage\": \"English\",\n" +
             "    \"phraseTags\": [\n" +
             "      \"greeting\",\n" +
             "      \"informal\"\n" +
