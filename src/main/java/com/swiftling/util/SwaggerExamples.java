@@ -72,7 +72,7 @@ public class SwaggerExamples {
             "      \"greeting\",\n" +
             "      \"informal\"\n" +
             "    ],\n" +
-            "    \"status\": \"LEARNED\",\n" +
+            "    \"status\": \"IN_PROGRESS\",\n" +
             "    \"notes\": \"Informal French greeting.\"\n" +
             "  }\n" +
             "}";
