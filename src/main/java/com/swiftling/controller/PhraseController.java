@@ -382,6 +382,21 @@ public class PhraseController {
     }
 
     @PostMapping("pronunciation/meaning")
+    @Operation(summary = "Get a pronunciation of the meaning of a phrase created by the logged in user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The pronunciation of the meaning of a phrase has been retrieved successfully."),
+            @ApiResponse(responseCode = "404", description = "The phrase does not exist: 550e8400-e29b-41d4-a716-446655440000",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.PHRASE_NOT_FOUND_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "404", description = "/some/file/location.txt (No such file or directory)",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.FILE_NOT_FOUND_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "409", description = "/some/file/location.txt (No such file or directory)",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.IOEXCEPTION_RESPONSE_EXAMPLE))),
+            @ApiResponse(responseCode = "403", description = "Access is denied",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
+                            examples = @ExampleObject(value = SwaggerExamples.ACCESS_DENIED_FORBIDDEN_RESPONSE_EXAMPLE)))})
     public ResponseEntity<ResponseWrapper> getMeaningPronunciation(@RequestParam(value = "phrase-id", required = true) UUID externalPhraseId) throws Exception {
 
         String audioFileName = "pronunciation.mp3";
