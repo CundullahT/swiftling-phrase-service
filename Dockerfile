@@ -3,7 +3,6 @@ FROM maven:3.9.6-eclipse-temurin-21 AS builder
 WORKDIR /usr/app
 COPY pom.xml .
 COPY src ./src
-COPY gcp-vm-demo-404621-4b8d0d79b218.json .
 RUN mvn package -DskipTests
 
 FROM eclipse-temurin:21-jre
